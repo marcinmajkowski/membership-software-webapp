@@ -1,0 +1,14 @@
+{
+  "name": "membership-software-webapp",
+  "description": "Membership software SPA (single-page application) frontend built with Angular Material",
+  "version": "0.0.0",
+  "homepage": "https://github.com/marcinmajkowski/membership-software-webapp",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular-material": "~1.1.0",
+    "angular-route": "^1.4.8",
+    "angular-resource": "^1.4.8",
+    "angular-mocks": "^1.4.8"
+  }
+}
