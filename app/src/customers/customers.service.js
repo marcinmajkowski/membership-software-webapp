@@ -42,6 +42,7 @@
             return $http.post(customersUrl, customer).then(function (response) {
                 //TODO pass data to event
                 $rootScope.$broadcast('customerCreated');
+                return response.data;
             });
         }
 

@@ -76,6 +76,11 @@
                     }
                 });
 
+                function selectCustomer(customer) {
+                    console.log('select');
+                    $location.path('/customer/' + customer.id);
+                }
+
                 //TODO report error
 
             });
