@@ -3,9 +3,9 @@
 
     angular
         .module('payments')
-        .component('msPaymentsList', {
-            templateUrl: "src/payments/view/payments-list.html",
-            controller: 'PaymentsListController',
+        .component('msPaymentList', {
+            templateUrl: "src/payments/view/payment-list.html",
+            controller: 'PaymentListController',
             bindings: {
                 payments: '<msPayments'
             }

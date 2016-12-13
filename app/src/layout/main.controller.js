@@ -16,6 +16,7 @@
         vm.newCustomer = newCustomer;
         vm.customers = [];
         vm.isCustomerSelected = isCustomerSelected;
+        vm.findCustomer = findCustomer;
 
         activate();
 
@@ -88,6 +89,10 @@
 
         function isCustomerSelected(customer) {
             return $location.path() == '/customer/' + customer.id;
+        }
+
+        function findCustomer() {
+            console.log('TODO MainController.searchCustomer()');
         }
     }
 
