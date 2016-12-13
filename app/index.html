@@ -78,19 +78,20 @@
             <md-list>
                 <md-list-item>
                     <md-button>
-                        <md-icon md-svg-icon="search" class="avatar-icon"></md-icon>
+                        <md-icon md-svg-icon="search"></md-icon>
                         Szukaj klienta
                     </md-button>
                 </md-list-item>
                 <md-list-item>
                     <md-button ng-click="vm.newCustomer($event)">
-                        <md-icon md-svg-icon="add" class="avatar-icon"></md-icon>
+                        <md-icon md-svg-icon="add"></md-icon>
                         Nowy klient
                     </md-button>
                 </md-list-item>
+                <md-divider></md-divider>
                 <md-list-item ng-repeat="it in vm.customers">
                     <md-button ng-click="vm.go('/customer/' + it.id)" ng-class="{'selected' : vm.isCustomerSelected(it)}">
-                        <md-icon md-svg-icon="svg-1" class="avatar"></md-icon>
+                        <md-icon></md-icon>
                         {{it.firstName + " " + it.lastName}}
                     </md-button>
                 </md-list-item>
