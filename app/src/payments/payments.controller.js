@@ -12,6 +12,7 @@
         var vm = this;
 
         vm.payments = [];
+        vm.newPayment = newPayment;
 
         activate();
 
@@ -23,6 +24,10 @@
             paymentsService.getPayments().then(function (payments) {
                 vm.payments = [].concat(payments);
             });
+        }
+
+        function newPayment() {
+            console.log('TODO PaymentsController.newPayment()');
         }
     }
 

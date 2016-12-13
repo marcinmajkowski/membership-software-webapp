@@ -5,20 +5,21 @@
         .module('customers')
         .controller('CustomerController', CustomerController);
 
-    CustomerController.$inject = ['customersService', 'cardsService', '$location', '$mdDialog'];
+    CustomerController.$inject = ['customersService', 'cardsService', 'paymentsService', '$location', '$mdDialog', '$routeParams'];
 
-    function CustomerController(customersService, cardsService, $location, $mdDialog) {
+    function CustomerController(customersService, cardsService, paymentsService, $location, $mdDialog, $routeParams) {
         var vm = this;
 
         vm.customersService = customersService;
         vm.toggleEditMode = toggleEditMode;
         vm.updateCustomer = updateCustomer;
         vm.deleteCustomer = deleteCustomer;
-        vm.customer = null;
+        vm.customer = {};
         vm.cards = []; //TODO move cards stuff to directive (just as payments)
         vm.newCard = newCard;
         vm.deleteCard = deleteCard;
         vm.editCard = editCard;
+        vm.payments = [];
 
         activate();
 
@@ -27,22 +28,27 @@
         // *********************************
 
         function activate() {
-            //FIXME move this to router
-            // Shouldn't' be accessed when no customer selected
-            if (customersService.selectedCustomer === null) {
+            customersService.readById($routeParams.id).then(function (customer) {
+                vm.customer = customer;
+                loadCustomerCards(vm.customer);
+                loadCustomerPayments(vm.customer);
+            }, function () {
+                //TODO report error
                 $location.path('/');
                 return;
+            });
+
+            function loadCustomerCards(customer) {
+                cardsService.readCardsByCustomer(customer).then(function (cards) {
+                    vm.cards = [].concat(cards);
+                });
             }
 
-            // Load customer details (customer from list contains only firstName, lastName and card codes)
-            customersService.readCustomerDetails(customersService.selectedCustomer).then(function (customer) {
-                vm.customer = customer;
-            });
-
-            // Load customer cards
-            cardsService.readCardsByCustomer(customersService.selectedCustomer).then(function (cards) {
-                vm.cards = cards;
-            });
+            function loadCustomerPayments(customer) {
+                paymentsService.getPaymentsByCustomer(customer).then(function (payments) {
+                    vm.payments = [].concat(payments);
+                });
+            }
         }
 
         function toggleEditMode() {
@@ -73,7 +79,6 @@
 
             $mdDialog.show(confirm).then(function () {
                 customersService.deleteCustomer(customer).then(function () {
-                    customersService.selectedCustomer = null;
                     $location.path('/');
                 });
             });

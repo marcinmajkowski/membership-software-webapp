@@ -88,8 +88,8 @@
                         Nowy klient
                     </md-button>
                 </md-list-item>
-                <md-list-item ng-repeat="it in vm.customersService.customers">
-                    <md-button ng-click="vm.selectCustomer(it)" ng-class="{'selected' : it === vm.customersService.selectedCustomer }">
+                <md-list-item ng-repeat="it in vm.customers">
+                    <md-button ng-click="vm.go('/customer/' + it.id)" ng-class="{'selected' : vm.isCustomerSelected(it)}">
                         <md-icon md-svg-icon="svg-1" class="avatar"></md-icon>
                         {{it.firstName + " " + it.lastName}}
                     </md-button>
@@ -139,7 +139,7 @@
 
     <script src="src/payments/payments.service.js"></script>
     <script src="src/payments/payments.controller.js"></script>
-    <script src="src/payments/payments-list.directive.js"></script>
+    <script src="src/payments/payments-list.component.js"></script>
     <script src="src/payments/payments-list.controller.js"></script>
     <script src="src/payments/customer-payments-list.directive.js"></script>
     <script src="src/payments/customer-payments-list.controller.js"></script>
