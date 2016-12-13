@@ -1,2 +1,7 @@
 <h1>Płatności</h1>
-<ms-payments-list></ms-payments-list>
+<ms-payments-list ms-payments="vm.payments"></ms-payments-list>
+<section layout="row" layout-align="end">
+    <md-button ng-click="vm.newPayment()">
+        Nowa płatność
+    </md-button>
+</section>

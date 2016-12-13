@@ -5,23 +5,26 @@
         .module('payments')
         .controller('PaymentsListController', PaymentsListController);
 
-    PaymentsListController.$inject = ['paymentsService'];
+    PaymentsListController.$inject = [];
 
-    function PaymentsListController(paymentsService) {
-        var vm = this;
+    function PaymentsListController() {
+        var ctrl = this;
 
-        vm.payments = [];
-
-        activate();
+        ctrl.editPayment = editPayment;
+        ctrl.deletePayment = deletePayment;
 
         // *********************************
         // Internal methods
         // *********************************
 
-        function activate() {
-            paymentsService.getPayments().then(function (payments) {
-                vm.payments = [].concat(payments);
-            });
+        function editPayment(payment) {
+            console.log('TODO PaymentsListController.editPayment()');
+            //TODO call callback
+        }
+
+        function deletePayment(payment) {
+            console.log('TODO PaymentsListController.deletePayment()');
+            //TODO call callback
         }
 
     }

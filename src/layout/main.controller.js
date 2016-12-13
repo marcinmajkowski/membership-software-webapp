@@ -5,16 +5,17 @@
         .module('membershipSoftwareLayout')
         .controller('MainController', MainController);
 
-    MainController.$inject = ['customersService', '$mdSidenav', '$location', '$mdDialog', '$route'];
+    MainController.$inject = ['customersService', '$mdSidenav', '$location', '$mdDialog', '$scope'];
 
-    function MainController(customersService, $mdSidenav, $location, $mdDialog, $route) {
+    //TODO handle events to maintain sidebar list (or better get rid of it)
+    function MainController(customersService, $mdSidenav, $location, $mdDialog, $scope) {
         var vm = this;
 
-        vm.customersService = customersService;
-        vm.selectCustomer = selectCustomer;
         vm.toggleList = toggleCustomersList;
         vm.go = go;
         vm.newCustomer = newCustomer;
+        vm.customers = [];
+        vm.isCustomerSelected = isCustomerSelected;
 
         activate();
 
@@ -23,18 +24,18 @@
         // *********************************
 
         function activate() {
+            loadCustomers();
+
+            $scope.$on('customerUpdated', loadCustomers);
+            $scope.$on('customerDeleted', loadCustomers);
+            $scope.$on('customerCreated', loadCustomers);
+            //TODO handle card events
         }
 
-        function selectCustomer(customer) {
-            //TODO load complete customer info from service
-            customersService.selectedCustomer = angular.isNumber(customer) ? customersService.customers[customer] : customer;
-
-            if ($location.path() != '/customer') {
-                $location.path('/customer');
-            } else {
-                // Force reload even if location didn't change so CustomerController.activate() will run
-                $route.reload();
-            }
+        function loadCustomers() {
+            customersService.getCustomersProjection('firstNameAndLastNameAndCards').then(function (customers) {
+                vm.customers = [].concat(customers);
+            });
         }
 
         /**
@@ -78,6 +79,10 @@
                 //TODO report error
 
             });
+        }
+
+        function isCustomerSelected(customer) {
+            return $location.path() == '/customer/' + customer.id;
         }
     }
 
