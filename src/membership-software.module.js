@@ -11,7 +11,6 @@
             'home',
             'checkIns',
             'payments',
-            'users',
             'customers',
             'memberships'
         ]);

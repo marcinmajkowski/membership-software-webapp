@@ -20,6 +20,7 @@
         vm.deleteCard = deleteCard;
         vm.editCard = editCard;
         vm.payments = [];
+        vm.newPayment = newPayment;
 
         activate();
 
@@ -124,7 +125,27 @@
 
         function editCard(card) {
             console.log(card);
-            console.log('TODO edit card');
+            console.log('TODO CustomerController.editCard()');
+        }
+
+        //TODO this is copied from old customer-payments-list controller (needs update)
+        function newPayment(ev) {
+            $mdDialog.show({
+                targetEvent: ev,
+                controller: 'CustomerNewPaymentDialogController',
+                templateUrl: 'src/payments/view/customer-new-payment-dialog.html',
+                controllerAs: 'vm'
+            }).then(function (userInput) {
+                var newPayment = {
+                    membershipStartDate: userInput.membershipStartDate
+                };
+
+                paymentsService.createPaymentFromMembershipForCustomer(newPayment, userInput.membership, vm.customer).then(function (payment) {
+                    vm.payments.push(payment);
+                });
+
+                //TODO report error
+            });
         }
     }
 

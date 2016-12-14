@@ -50,5 +50,10 @@
     </md-button>
 </section>
 <h2>Płatności</h2>
-<ms-customer-payments-list ms-payments="vm.payments"></ms-customer-payments-list>
+<ms-customer-payment-list ms-payments="vm.payments"></ms-customer-payment-list>
+<section layout="row" layout-align="end">
+    <md-button ng-click="vm.newPayment($event)">
+        Nowa płatność
+    </md-button>
+</section>
 <h2>Wejścia</h2>

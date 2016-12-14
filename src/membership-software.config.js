@@ -45,7 +45,7 @@
 
             $mdThemingProvider
                 .theme('default')
-                .primaryPalette('blue')
+                .primaryPalette('teal')
                 .warnPalette('red');
 
         });

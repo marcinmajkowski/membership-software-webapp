@@ -2,7 +2,7 @@
 <html lang="pl-PL">
 
 <head>
-    <title>Lepszy Klub</title>
+    <title>Zarządzanie obiektem sportowym</title>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,13 +28,13 @@
 
 <body ng-app="membershipSoftware" layout="column" ng-controller="MainController as vm" ng-cloak>
 
-    <md-toolbar layout="row" md-theme="darkToolbar">
+    <md-toolbar layout="row">
         <md-button class="menu" hide-gt-sm ng-click="vm.toggleList()" aria-label="Show User List">
             <md-icon md-svg-icon="menu"></md-icon>
         </md-button>
-        <a ng-href="#/">
+        <a ng-href="#!/">
             <h1 hide show-gt-sm class="brand">
-                Lepszy Klub
+                Zarządzanie obiektem sportowym
             </h1>
         </a>
         <span flex></span>
@@ -77,20 +77,21 @@
         <md-sidenav ng-click="vm.toggleList()" md-is-locked-open="$mdMedia('gt-sm')" md-component-id="left" class="md-whiteframe-z2">
             <md-list>
                 <md-list-item>
-                    <md-button>
-                        <md-icon md-svg-icon="search" class="avatar-icon"></md-icon>
+                    <md-button ng-click="vm.findCustomer()">
+                        <md-icon md-svg-icon="search"></md-icon>
                         Szukaj klienta
                     </md-button>
                 </md-list-item>
                 <md-list-item>
                     <md-button ng-click="vm.newCustomer($event)">
-                        <md-icon md-svg-icon="add" class="avatar-icon"></md-icon>
+                        <md-icon md-svg-icon="add"></md-icon>
                         Nowy klient
                     </md-button>
                 </md-list-item>
+                <md-divider></md-divider>
                 <md-list-item ng-repeat="it in vm.customers">
                     <md-button ng-click="vm.go('/customer/' + it.id)" ng-class="{'selected' : vm.isCustomerSelected(it)}">
-                        <md-icon md-svg-icon="svg-1" class="avatar"></md-icon>
+                        <md-icon></md-icon>
                         {{it.firstName + " " + it.lastName}}
                     </md-button>
                 </md-list-item>
@@ -139,15 +140,11 @@
 
     <script src="src/payments/payments.service.js"></script>
     <script src="src/payments/payments.controller.js"></script>
-    <script src="src/payments/payments-list.component.js"></script>
-    <script src="src/payments/payments-list.controller.js"></script>
-    <script src="src/payments/customer-payments-list.directive.js"></script>
-    <script src="src/payments/customer-payments-list.controller.js"></script>
+    <script src="src/payments/payment-list.component.js"></script>
+    <script src="src/payments/payment-list.controller.js"></script>
+    <script src="src/payments/customer-payment-list.component.js"></script>
+    <script src="src/payments/customer-payment-list.controller.js"></script>
     <script src="src/payments/customer-new-payment-dialog.controller.js"></script>
-
-    <script src="src/users/Users.js"></script>
-    <script src="src/users/UserController.js"></script>
-    <script src="src/users/UserService.js"></script>
 
 </body>
 

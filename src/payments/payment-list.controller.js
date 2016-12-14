@@ -3,11 +3,11 @@
 
     angular
         .module('payments')
-        .controller('PaymentsListController', PaymentsListController);
+        .controller('PaymentListController', PaymentListController);
 
-    PaymentsListController.$inject = [];
+    PaymentListController.$inject = [];
 
-    function PaymentsListController() {
+    function PaymentListController() {
         var ctrl = this;
 
         ctrl.editPayment = editPayment;
@@ -18,12 +18,12 @@
         // *********************************
 
         function editPayment(payment) {
-            console.log('TODO PaymentsListController.editPayment()');
+            console.log('TODO PaymentListController.editPayment()');
             //TODO call callback
         }
 
         function deletePayment(payment) {
-            console.log('TODO PaymentsListController.deletePayment()');
+            console.log('TODO PaymentListController.deletePayment()');
             //TODO call callback
         }
 
