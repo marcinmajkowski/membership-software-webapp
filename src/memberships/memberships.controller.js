@@ -31,7 +31,7 @@
             $mdDialog.show({
                 targetEvent: ev,
                 controller: 'NewMembershipDialogController',
-                templateUrl: 'src/memberships/view/new-membership-dialog.html',
+                templateUrl: 'src/memberships/new-membership-dialog.html',
                 controllerAs: 'vm'
             }).then(function (userInput) {
                 var newMembership = {

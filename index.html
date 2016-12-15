@@ -89,6 +89,7 @@
                     </md-button>
                 </md-list-item>
                 <md-divider></md-divider>
+                <!-- TODO sort by last visit date, load asynchronously -->
                 <md-list-item ng-repeat="it in vm.customers">
                     <md-button ng-click="vm.go('/customer/' + it.id)" ng-class="{'selected' : vm.isCustomerSelected(it)}">
                         <md-icon></md-icon>
@@ -129,6 +130,8 @@
     <script src="src/customers/customers.service.js"></script>
 
     <script src="src/cards/cards.service.js"></script>
+    <script src="src/cards/card-list.component.js"></script>
+    <script src="src/cards/card-list.controller.js"></script>
 
     <script src="src/memberships/memberships.service.js"></script>
     <script src="src/memberships/memberships.controller.js"></script>
@@ -137,6 +140,10 @@
     <script src="src/home/home.controller.js"></script>
 
     <script src="src/check-ins/check-ins.controller.js"></script>
+    <script src="src/check-ins/check-ins.service.js"></script>
+    <script src="src/check-ins/new-check-in-dialog.controller.js"></script>
+    <script src="src/check-ins/check-in-list.component.js"></script>
+    <script src="src/check-ins/check-in-list.controller.js"></script>
 
     <script src="src/payments/payments.service.js"></script>
     <script src="src/payments/payments.controller.js"></script>
