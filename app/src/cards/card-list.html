@@ -1,0 +1,15 @@
+<md-list>
+    <md-list-item ng-repeat="card in $ctrl.cards">
+        <div layout="row" flex>
+            <p flex>
+                {{card.code}} (wydana {{card.issueTimestamp | date}})
+            </p>
+            <md-button class="md-icon-button" ng-click="$ctrl.remove(card, $event)" aria-label="Usuń">
+                <md-icon md-svg-icon="delete_forever"></md-icon>
+            </md-button>
+            <md-button class="md-icon-button" ng-click="$ctrl.edit(card)" aria-label="Edytuj">
+                <md-icon md-svg-icon="mode_edit"></md-icon>
+            </md-button>
+        </div>
+    </md-list-item>
+</md-list>

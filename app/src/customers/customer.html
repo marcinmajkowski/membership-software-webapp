@@ -29,21 +29,7 @@
     </md-button>
 </section>
 <h2>Karty</h2>
-<md-list>
-    <md-list-item ng-repeat="card in vm.cards">
-        <div layout="row" flex>
-            <p flex>
-                {{card.code}} (wydana {{card.issueTimestamp | date}})
-            </p>
-            <md-button class="md-icon-button" ng-click="vm.deleteCard($event, vm.customer, card)" aria-label="Usuń">
-                <md-icon md-svg-icon="delete_forever"></md-icon>
-            </md-button>
-            <md-button class="md-icon-button" ng-click="vm.editCard(card)" aria-label="Edytuj">
-                <md-icon md-svg-icon="mode_edit"></md-icon>
-            </md-button>
-        </div>
-    </md-list-item>
-</md-list>
+<ms-card-list ms-cards="vm.cards" ms-on-edit="vm.editCard(card)" ms-on-delete="vm.deleteCard(card, event)"></ms-card-list>
 <section layout="row" layout-align="end">
     <md-button ng-click="vm.newCard($event, vm.customer)">
         Nowa karta
@@ -57,3 +43,9 @@
     </md-button>
 </section>
 <h2>Wejścia</h2>
+<ms-check-in-list ms-check-ins="vm.checkIns"></ms-check-in-list>
+<section layout="row" layout-align="end">
+    <md-button ng-click="vm.newCheckIn($event)">
+        Nowe wejście
+    </md-button>
+</section>

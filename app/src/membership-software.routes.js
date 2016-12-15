@@ -6,32 +6,33 @@
         .config(['$routeProvider', function ($routeProvider) {
             $routeProvider
                 .when('/payments', {
-                    templateUrl: 'src/payments/view/payments.html',
+                    templateUrl: 'src/payments/payments.html',
                     controller: 'PaymentsController',
                     controllerAs: 'vm'
                 })
                 .when('/check-ins', {
-                    templateUrl: 'src/check-ins/view/check-ins.html',
-                    controller: 'CheckInsController'
+                    templateUrl: 'src/check-ins/check-ins.html',
+                    controller: 'CheckInsController',
+                    controllerAs: 'vm'
                 })
                 .when('/customers', {
-                    templateUrl: 'src/customers/view/customers.html'
+                    templateUrl: 'src/customers/customers.html'
                 })
                 .when('/customer/:id', {
-                    templateUrl: 'src/customers/view/customer.html',
+                    templateUrl: 'src/customers/customer.html',
                     controller: 'CustomerController',
                     controllerAs: 'vm'
                 })
                 .when('/new-customer', {
-                    templateUrl: 'src/customers/view/new-customer.html'
+                    templateUrl: 'src/customers/new-customer.html'
                 })
                 .when('/memberships', {
-                    templateUrl: 'src/memberships/view/memberships.html',
+                    templateUrl: 'src/memberships/memberships.html',
                     controller: 'MembershipsController',
                     controllerAs: 'vm'
                 })
                 .when('/', {
-                    templateUrl: 'src/home/view/home.html',
+                    templateUrl: 'src/home/home.html',
                     controller: 'HomeController'
                 })
                 .otherwise({

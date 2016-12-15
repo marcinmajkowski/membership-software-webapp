@@ -1,21 +1,26 @@
-(function(){
+(function () {
+    'use strict';
 
-  angular
-       .module('checkIns')
-       .controller('CheckInsController', [
-          CheckInsController
-       ]);
+    angular
+        .module('checkIns')
+        .controller('CheckInsController', CheckInsController);
 
-  /**
-   * Main Controller for the Angular Material Starter App
-   * @param $scope
-   * @param $mdSidenav
-   * @param avatarsService
-   * @constructor
-   */
-  function CheckInsController() {
-    var self = this;
+    CheckInsController.$inject = ['checkInsService'];
 
-  }
+    function CheckInsController(checkInsService) {
+        var vm = this;
+
+        vm.checkIns = [];
+
+        activate();
+
+        function activate() {
+            checkInsService
+                .getCheckIns()
+                .then(function (checkIns) {
+                    vm.checkIns = [].concat(checkIns);
+                });
+        }
+    }
 
 })();

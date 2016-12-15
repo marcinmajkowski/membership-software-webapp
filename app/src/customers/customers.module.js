@@ -2,6 +2,6 @@
     'use strict';
 
     angular
-        .module('customers', ['ngMaterial', 'cards']);
+        .module('customers', ['ngMaterial', 'cards', 'checkIns']);
 
 })();

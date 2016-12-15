@@ -58,7 +58,7 @@
             $mdDialog.show({
                 targetEvent: ev,
                 controller: 'NewCustomerDialogController',
-                templateUrl: 'src/customers/view/new-customer-dialog.html',
+                templateUrl: 'src/customers/new-customer-dialog.html',
                 controllerAs: 'vm'
             }).then(function (userInput) {
                 var newCustomer = {

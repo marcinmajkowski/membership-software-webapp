@@ -4,7 +4,7 @@
             <p flex>
                 {{payment.membershipPrice}} PLN za {{payment.membershipNumberOfTrainings}} treningów, w dniu {{payment.timestamp | date}}
             </p>
-            <md-button class="md-icon-button" aria-label="Usuń" md-click="$ctrl.deletePayment(payment)">
+            <md-button class="md-icon-button" aria-label="Usuń" ng-click="$ctrl.deletePayment(payment)">
                 <md-icon md-svg-icon="delete_forever"></md-icon>
             </md-button>
             <md-button class="md-icon-button" aria-label="Edytuj" ng-click="$ctrl.editPayment(payment)">

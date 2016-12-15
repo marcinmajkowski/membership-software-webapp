@@ -1,0 +1,15 @@
+<md-list>
+    <md-list-item ng-repeat="checkIn in $ctrl.checkIns | orderBy:'-timestamp'">
+        <div layout="row" flex>
+            <p flex>
+                {{checkIn.timestamp | date:'medium'}}
+            </p>
+            <md-button class="md-icon-button" aria-label="Usuń" ng-click="$ctrl.remove(checkIn)">
+                <md-icon md-svg-icon="delete_forever"></md-icon>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="Edytuj" ng-click="$ctrl.edit(checkIn)">
+                <md-icon md-svg-icon="mode_edit"></md-icon>
+            </md-button>
+        </div>
+    </md-list-item>
+</md-list>
