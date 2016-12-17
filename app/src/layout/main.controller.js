@@ -11,6 +11,9 @@
     function MainController(customersService, $mdSidenav, $location, $mdDialog, $scope) {
         var vm = this;
 
+        vm.autocomplete = {};
+        vm.customersQuerySearch = customersQuerySearch;
+        vm.selectedCustomerChange = selectedCustomerChange
         vm.toggleList = toggleCustomersList;
         vm.go = go;
         vm.newCustomer = newCustomer;
@@ -37,6 +40,43 @@
             customersService.getCustomersProjection('firstNameAndLastNameAndCards').then(function (customers) {
                 vm.customers = [].concat(customers);
             });
+        }
+
+        function customersQuerySearch(query) {
+            return vm.customers.filter(createFilterFor(query));
+        }
+
+        /**
+         * Create filter function for a query string
+         */
+        function createFilterFor(query) {
+            var lowercaseQuery = angular.lowercase(query);
+
+            //TODO card numbers
+            //TODO polish special characters
+            return function filterFn(customer) {
+                var lowercaseFirstName = angular.lowercase(customer.firstName);
+                var lowercaseLastName = angular.lowercase(customer.lastName);
+                var lowercaseFullName = lowercaseFirstName + ' ' + lowercaseLastName;
+                if (lowercaseFullName.indexOf(lowercaseQuery) === 0) {
+                    return true;
+                }
+
+                if (lowercaseLastName.indexOf(lowercaseQuery) === 0) {
+                    return true;
+                }
+
+                return false;
+            };
+        }
+
+        function selectedCustomerChange(customer) {
+            if (!customer) {
+                return;
+            }
+
+            vm.go('/customer/' + customer.id);
+            vm.autocomplete = {};
         }
 
         /**
@@ -78,7 +118,6 @@
                 });
 
                 function selectCustomer(customer) {
-                    console.log('select');
                     $location.path('/customer/' + customer.id);
                 }
 

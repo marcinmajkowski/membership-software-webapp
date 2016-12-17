@@ -49,14 +49,24 @@
             <md-button class="md-icon-button" ng-disabled="true" aria-label="Szukaj">
                 <md-icon md-svg-icon="search_white"></md-icon>
             </md-button>
-            <!-- TODO autocomplete -->
+            <!-- TODO go on card number exact match -->
             <md-autocomplete
-                    md-selected-item="selectedItem"
-                    md-search-text="searchText"
-                    md-items="item in getMatches(searchText)"
-                    md-item-text="item.display"
+                    md-autoselect="true"
+                    md-no-cache="true"
+                    placeholder="Wyszukaj klientów"
+                    md-selected-item="vm.autocomplete.selectedCustomer"
+                    md-selected-item-change="vm.selectedCustomerChange(customer)"
+                    md-search-text="vm.autocomplete.query"
+                    md-items="customer in vm.customersQuerySearch(vm.autocomplete.query)"
+                    md-item-text="customer.firstName + ' ' + customer.lastName"
                     md-autofocus>
-                <span md-highlight-text="searchText">{{item.display}}</span>
+                <md-item-template>
+                    <!-- TODO probably this highlights what expected -->
+                    <span md-highlight-text="vm.autocomplete.query" md-highlight-flags="i">{{customer.firstName + " " + customer.lastName}}</span>
+                </md-item-template>
+                <md-not-found>
+                    Nic nie znaleziono
+                </md-not-found>
             </md-autocomplete>
             <md-menu md-position-mode="target-right target">
                 <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
