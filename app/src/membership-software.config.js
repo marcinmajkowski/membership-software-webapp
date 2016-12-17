@@ -19,7 +19,9 @@
                 .icon("google_plus", "./assets/svg/google_plus.svg", 512)
                 .icon("hangouts", "./assets/svg/hangouts.svg", 512)
                 .icon("twitter", "./assets/svg/twitter.svg", 512)
-                .icon("phone", "./assets/svg/phone.svg", 512);
+                .icon("phone", "./assets/svg/phone.svg", 512)
+                .icon("person_add", "./assets/svg/ic_person_add_24px.svg", 24)
+                .icon("person_add_black", "./assets/svg/ic_person_add_black_24px.svg", 24);
 
             $mdThemingProvider
                 .definePalette('black', {

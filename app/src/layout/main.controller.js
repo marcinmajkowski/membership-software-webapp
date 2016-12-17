@@ -18,7 +18,6 @@
         vm.go = go;
         vm.newCustomer = newCustomer;
         vm.customers = [];
-        vm.isCustomerSelected = isCustomerSelected;
         vm.findCustomer = findCustomer;
 
         activate();
@@ -124,10 +123,6 @@
                 //TODO report error
 
             });
-        }
-
-        function isCustomerSelected(customer) {
-            return $location.path() == '/customer/' + customer.id;
         }
 
         function findCustomer() {

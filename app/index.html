@@ -2,14 +2,14 @@
 <html lang="pl-PL">
 
 <head>
-    <title>Zarządzanie obiektem sportowym</title>
+    <title>Zarządzanie Obiektem Sportowym</title>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
 
-    <link rel="shortcut icon" type="image/x-icon" href="assets/icons/lepszy-klub-rounded-corners.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/icons/favicon.ico">
 
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
@@ -19,7 +19,13 @@
         /**
          * Hide when Angular is not yet loaded and initialized
          */
-        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+        
+        [ng\:cloak],
+        [ng-cloak],
+        [data-ng-cloak],
+        [x-ng-cloak],
+        .ng-cloak,
+        .x-ng-cloak {
             display: none !important;
         }
     </style>
@@ -33,8 +39,8 @@
             <md-button class="md-icon-button" hide-gt-sm ng-click="vm.toggleList()" aria-label="Show User List">
                 <md-icon md-svg-icon="menu"></md-icon>
             </md-button>
-            <h2 hide show-gt-sm >
-                <a ng-href="#!/">Zarządzanie obiektem sportowym</a>
+            <h2 hide show-gt-sm>
+                <a ng-href="#!/">Zarządzanie Obiektem Sportowym</a>
             </h2>
             <span flex></span>
             <md-button ng-click="vm.go('/customers')" hide show-gt-sm>
@@ -47,19 +53,13 @@
                 Płatności
             </md-button>
             <md-button class="md-icon-button" ng-disabled="true" aria-label="Szukaj">
-                <md-icon md-svg-icon="search_white"></md-icon>
+                <md-icon md-svg-icon="search_white" hide-xs></md-icon>
             </md-button>
             <!-- TODO go on card number exact match -->
-            <md-autocomplete
-                    md-autoselect="true"
-                    md-no-cache="true"
-                    placeholder="Wyszukaj klientów"
-                    md-selected-item="vm.autocomplete.selectedCustomer"
-                    md-selected-item-change="vm.selectedCustomerChange(customer)"
-                    md-search-text="vm.autocomplete.query"
-                    md-items="customer in vm.customersQuerySearch(vm.autocomplete.query)"
-                    md-item-text="customer.firstName + ' ' + customer.lastName"
-                    md-autofocus>
+            <md-autocomplete md-autoselect="true" md-no-cache="true" placeholder="Wyszukaj klientów" md-selected-item="vm.autocomplete.selectedCustomer"
+                md-selected-item-change="vm.selectedCustomerChange(customer)" md-search-text="vm.autocomplete.query" md-items="customer in vm.customersQuerySearch(vm.autocomplete.query)"
+                md-item-text="customer.firstName + ' ' + customer.lastName" md-autofocus>
+                <!-- TODO autofocus does not work -->
                 <md-item-template>
                     <!-- TODO probably this highlights what expected -->
                     <span md-highlight-text="vm.autocomplete.query" md-highlight-flags="i">{{customer.firstName + " " + customer.lastName}}</span>
@@ -111,27 +111,22 @@
 
     <div flex layout="row" ng-controller="MainController as vm">
 
-        <md-sidenav id="sidenav" ng-click="vm.toggleList()" md-is-locked-open="$mdMedia('gt-sm')" md-component-id="left" class="md-whiteframe-z2">
+        <md-sidenav id="sidenav" md-is-locked-open="$mdMedia('gt-sm')" md-component-id="left" class="md-whiteframe-z2">
+
+            <md-button aria-label="Nowy klient" class="md-fab md-fab-top-right md-primary" ng-click="vm.newCustomer($event)">
+                <md-icon md-svg-icon="person_add"></md-icon>
+            </md-button>
+
             <md-list>
-                <md-list-item>
-                    <md-button ng-click="vm.newCustomer($event)">
-                        <md-icon md-svg-icon="add"></md-icon>
-                        Nowy klient
-                    </md-button>
-                </md-list-item>
-                <md-divider></md-divider>
+                <md-subheader class="md-no-sticky">Klienci</md-subheader>
                 <!-- TODO sort by last visit date, load asynchronously -->
-                <md-list-item ng-repeat="it in vm.customers">
-                    <md-button ng-click="vm.go('/customer/' + it.id)" ng-class="{'md-primary' : vm.isCustomerSelected(it)}">
-                        <md-icon></md-icon>
-                        {{it.firstName + " " + it.lastName}}
-                    </md-button>
+                <md-list-item ng-repeat="customer in vm.customers" ng-click="vm.go('/customer/' + customer.id)">
+                    <p>{{customer.firstName + " " + customer.lastName}}</p>
                 </md-list-item>
             </md-list>
         </md-sidenav>
 
-        <md-content flex id="content" ng-view></md-content>
-
+        <md-content flex ng-view></md-content>
     </div>
 
     <script src="bower_components/angular/angular.js"></script>
