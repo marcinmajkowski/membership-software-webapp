@@ -1,7 +1,15 @@
-<h1>Płatności</h1>
-<ms-payment-list ms-payments="vm.payments"></ms-payment-list>
-<section layout="row" layout-align="end">
-    <md-button ng-click="vm.newPayment()">
-        Nowa płatność
-    </md-button>
-</section>
+<md-card>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Płatności</h2>
+        </div>
+    </md-toolbar>
+    <md-card-content>
+        <ms-payment-list ms-payments="vm.payments"></ms-payment-list>
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="end center">
+        <md-button ng-click="vm.newPayment()">
+            Nowa płatność
+        </md-button>
+    </md-card-actions>
+</md-card>
