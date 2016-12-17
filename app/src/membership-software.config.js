@@ -10,6 +10,7 @@
                 .icon("menu", "./assets/svg/menu.svg", 24)
                 .icon("share", "./assets/svg/share.svg", 24)
                 .icon("add", "./assets/svg/ic_add_black_24px.svg", 24)
+                .icon("search_white", "./assets/svg/ic_search_white_24px.svg", 24)
                 .icon("search", "./assets/svg/ic_search_black_24px.svg", 24)
                 .icon("mode_edit", "./assets/svg/ic_mode_edit_black_24px.svg", 24)
                 .icon("more_vert", "./assets/svg/more_vert.svg", 24)

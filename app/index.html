@@ -28,48 +28,75 @@
 
 <body ng-app="membershipSoftware" layout="column" ng-controller="MainController as vm" ng-cloak>
 
-    <md-toolbar layout="row">
-        <md-button class="menu" hide-gt-sm ng-click="vm.toggleList()" aria-label="Show User List">
-            <md-icon md-svg-icon="menu"></md-icon>
-        </md-button>
-        <a ng-href="#!/">
-            <h1 hide show-gt-sm class="brand">
-                Zarządzanie obiektem sportowym
-            </h1>
-        </a>
-        <span flex></span>
-        <md-button ng-click="vm.go('/customers')">
-            Klienci
-        </md-button>
-        <md-button ng-click="vm.go('/check-ins')">
-            Wejścia
-        </md-button>
-        <md-button ng-click="vm.go('/payments')">
-            Płatności
-        </md-button>
-        <md-menu md-position-mode="target-right target">
-            <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
-                <md-icon md-svg-icon="more_vert"></md-icon>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" hide-gt-sm ng-click="vm.toggleList()" aria-label="Show User List">
+                <md-icon md-svg-icon="menu"></md-icon>
             </md-button>
-            <md-menu-content width="4">
-                <md-menu-item>
-                    <md-button ng-click="vm.go('/memberships')">
-                        <div layout="row" flex>
-                            <p flex>Oferta</p>
-                            <!--<md-icon md-menu-align-target md-svg-icon="assets/svg/ic_add_black_24px.svg" style="margin: auto 3px auto 0;"></md-icon>-->
-                        </div>
-                    </md-button>
-                </md-menu-item>
-                <md-menu-item>
-                    <md-button>
-                        <div layout="row" flex>
-                            <p flex>Grupy</p>
-                            <!--<md-icon md-menu-align-target md-svg-icon="assets/svg/ic_add_black_24px.svg" style="margin: auto 3px auto 0;"></md-icon>-->
-                        </div>
-                    </md-button>
-                </md-menu-item>
-            </md-menu-content>
-        </md-menu>
+            <h2 hide show-gt-sm >
+                <a ng-href="#!/">Zarządzanie obiektem sportowym</a>
+            </h2>
+            <span flex></span>
+            <md-button ng-click="vm.go('/customers')" hide show-gt-sm>
+                Klienci
+            </md-button>
+            <md-button ng-click="vm.go('/check-ins')" hide show-gt-sm>
+                Wejścia
+            </md-button>
+            <md-button ng-click="vm.go('/payments')" hide show-gt-sm>
+                Płatności
+            </md-button>
+            <md-button class="md-icon-button" ng-disabled="true">
+                <md-icon md-svg-icon="search_white"></md-icon>
+            </md-button>
+            <!-- TODO autocomplete -->
+            <md-autocomplete
+                    md-selected-item="selectedItem"
+                    md-search-text="searchText"
+                    md-items="item in getMatches(searchText)"
+                    md-item-text="item.display"
+                    md-autofocus>
+                <span md-highlight-text="searchText">{{item.display}}</span>
+            </md-autocomplete>
+            <md-menu md-position-mode="target-right target">
+                <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
+                    <md-icon md-svg-icon="more_vert"></md-icon>
+                </md-button>
+                <md-menu-content width="3">
+                    <!-- TODO use ng-repeat -->
+                    <md-menu-item hide-gt-sm>
+                        <md-button ng-click="vm.go('/customers')">
+                            Klienci
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item hide-gt-sm>
+                        <md-button ng-click="vm.go('/check-ins')">
+                            Wejścia
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item hide-gt-sm>
+                        <md-button ng-click="vm.go('/payments')">
+                            Płatności
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="vm.go('/memberships')">
+                            Oferta
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button>
+                            Grupy
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button>
+                            Ustawienia
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </div>
     </md-toolbar>
 
     <div flex layout="row" ng-controller="MainController as vm">
@@ -77,18 +104,13 @@
         <md-sidenav ng-click="vm.toggleList()" md-is-locked-open="$mdMedia('gt-sm')" md-component-id="left" class="md-whiteframe-z2">
             <md-list>
                 <md-list-item>
-                    <md-button ng-click="vm.findCustomer()">
-                        <md-icon md-svg-icon="search"></md-icon>
-                        Szukaj klienta
-                    </md-button>
-                </md-list-item>
-                <md-list-item>
                     <md-button ng-click="vm.newCustomer($event)">
                         <md-icon md-svg-icon="add"></md-icon>
                         Nowy klient
                     </md-button>
                 </md-list-item>
                 <md-divider></md-divider>
+                <!-- TODO sort by last visit date, load asynchronously -->
                 <md-list-item ng-repeat="it in vm.customers">
                     <md-button ng-click="vm.go('/customer/' + it.id)" ng-class="{'selected' : vm.isCustomerSelected(it)}">
                         <md-icon></md-icon>
