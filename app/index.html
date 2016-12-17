@@ -101,7 +101,7 @@
 
     <div flex layout="row" ng-controller="MainController as vm">
 
-        <md-sidenav ng-click="vm.toggleList()" md-is-locked-open="$mdMedia('gt-sm')" md-component-id="left" class="md-whiteframe-z2">
+        <md-sidenav id="sidenav" ng-click="vm.toggleList()" md-is-locked-open="$mdMedia('gt-sm')" md-component-id="left" class="md-whiteframe-z2">
             <md-list>
                 <md-list-item>
                     <md-button ng-click="vm.newCustomer($event)">
@@ -112,7 +112,7 @@
                 <md-divider></md-divider>
                 <!-- TODO sort by last visit date, load asynchronously -->
                 <md-list-item ng-repeat="it in vm.customers">
-                    <md-button ng-click="vm.go('/customer/' + it.id)" ng-class="{'selected' : vm.isCustomerSelected(it)}">
+                    <md-button ng-click="vm.go('/customer/' + it.id)" ng-class="{'md-primary' : vm.isCustomerSelected(it)}">
                         <md-icon></md-icon>
                         {{it.firstName + " " + it.lastName}}
                     </md-button>
