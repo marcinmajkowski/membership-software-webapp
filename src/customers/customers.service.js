@@ -16,7 +16,6 @@
             createCardForCustomerByCode: createCardForCustomerByCode,
             updateCustomer: updateCustomer,
             deleteCustomer: deleteCustomer,
-            deleteCardForCustomer: deleteCardForCustomer, //TODO seems like it doesn't fit here
             //TODO better naming
             getCustomersProjection: getCustomersProjection
         };
@@ -72,12 +71,6 @@
             return $http.delete(customer._links.self.href).then(function () {
                 //TODO pass data to event
                 $rootScope.$broadcast('customerDeleted');
-            });
-        }
-
-        function deleteCardForCustomer(customer, card) {
-            return cardsService.deleteCard(card).then(function () {
-                //TODO emit event to update sidebar
             });
         }
 

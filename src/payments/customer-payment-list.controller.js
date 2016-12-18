@@ -17,12 +17,18 @@
         // Internal methods
         // *********************************
 
-        function editPayment(payment) {
-            //TODO call callback
+        function editPayment(payment, event) {
+            ctrl.onEdit && ctrl.onEdit({
+                payment: payment,
+                event: event
+            });
         }
 
-        function deletePayment(payment) {
-            //TODO call callback
+        function deletePayment(payment, event) {
+            ctrl.onDelete && ctrl.onDelete({
+                payment: payment,
+                event: event
+            });
         }
 
     }

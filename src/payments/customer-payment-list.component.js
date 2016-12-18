@@ -7,7 +7,9 @@
             templateUrl: "src/payments/customer-payment-list.html",
             controller: 'CustomerPaymentListController',
             bindings: {
-                payments: '<msPayments'
+                payments: '<msPayments',
+                onDelete: '&?msOnDelete',
+                onEdit: '&?msOnEdit'
             }
         });
 

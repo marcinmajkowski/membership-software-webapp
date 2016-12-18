@@ -13,14 +13,18 @@
         ctrl.edit = edit;
         ctrl.remove = remove;
 
-        function edit(checkIn) {
-            //TODO call callback if exists
-            console.log('TODO CheckInListController.edit()');
+        function edit(checkIn, event) {
+            ctrl.onEdit && ctrl.onEdit({
+                checkIn: checkIn,
+                event: event
+            });
         }
 
-        function remove(checkIn) {
-            //TODO call callback if exists
-            console.log('TODO CheckInListController.remove()');
+        function remove(checkIn, event) {
+            ctrl.onDelete && ctrl.onDelete({
+                checkIn: checkIn,
+                event: event
+            });
         }
 
     }

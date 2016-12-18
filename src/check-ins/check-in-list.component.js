@@ -7,7 +7,9 @@
             templateUrl: "src/check-ins/check-in-list.html",
             controller: 'CheckInListController',
             bindings: {
-                checkIns: '<msCheckIns'
+                checkIns: '<msCheckIns',
+                onDelete: '&?msOnDelete',
+                onEdit: '&?msOnEdit'
             }
         });
 

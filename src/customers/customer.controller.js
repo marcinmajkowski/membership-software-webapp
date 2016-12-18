@@ -7,6 +7,7 @@
 
     CustomerController.$inject = ['customersService', 'cardsService', 'paymentsService', 'checkInsService', '$location', '$mdDialog', '$routeParams'];
 
+    //TODO add indicator if there are unsaved changes
     function CustomerController(customersService, cardsService, paymentsService, checkInsService, $location, $mdDialog, $routeParams) {
         var vm = this;
 
@@ -23,9 +24,14 @@
 
         vm.payments = [];
         vm.newPayment = newPayment;
+        //TODO probably should handle editing inside component and call update here
+        vm.editPayment = editPayment;
+        vm.deletePayment = deletePayment;
 
         vm.checkIns = [];
         vm.newCheckIn = newCheckIn;
+        vm.editCheckIn = editCheckIn;
+        vm.deleteCheckIn = deleteCheckIn;
 
         activate();
 
@@ -147,8 +153,8 @@
                 .cancel('Anuluj');
 
             $mdDialog.show(confirm).then(function () {
-                customersService
-                    .deleteCardForCustomer(vm.customer, card)
+                cardsService
+                    .deleteCard(card)
                     .then(function () {
                         var index = vm.cards.indexOf(card);
                         if (index > -1) {
@@ -158,7 +164,7 @@
             });
         }
 
-        function editCard(card) {
+        function editCard(card, event) {
             console.log(card);
             console.log('TODO CustomerController.editCard()');
         }
@@ -191,6 +197,32 @@
                 });
         }
 
+        function editPayment(payment, event) {
+            console.log('TODO CustomerController.editPayment()');
+        }
+
+        function deletePayment(payment, event) {
+            // TODO delete button should go on the left
+            var confirm = $mdDialog
+                .confirm()
+                .title('Czy na pewno chcesz usunąć tę płatność?')
+                .textContent('Operacji nie będzie się dało odwrócić.')
+                .targetEvent(event)
+                .ok('Usuń')
+                .cancel('Anuluj');
+
+            $mdDialog.show(confirm).then(function () {
+                paymentsService
+                    .deletePayment(payment)
+                    .then(function () {
+                        var index = vm.payments.indexOf(payment);
+                        if (index > -1) {
+                            vm.payments.splice(index, 1);
+                        }
+                    });
+            });
+        }
+
         function newCheckIn(ev) {
             //TODO open dialog to select group and payment if multiple available
             var checkInToCreate = {
@@ -202,6 +234,32 @@
                 .then(function (checkIn) {
                     vm.checkIns.push(checkIn); // TODO or reload whole list
                 });
+        }
+
+        function editCheckIn(checkIn, event) {
+            console.log('TODO CustomerController.editCheckIn()');
+        }
+        
+        function deleteCheckIn(checkIn, event) {
+            // TODO delete button should go on the left
+            var confirm = $mdDialog
+                .confirm()
+                .title('Czy na pewno chcesz usunąć to wejście?')
+                .textContent('Operacji nie będzie się dało odwrócić.')
+                .targetEvent(event)
+                .ok('Usuń')
+                .cancel('Anuluj');
+
+            $mdDialog.show(confirm).then(function () {
+                checkInsService
+                    .deleteCheckIn(checkIn)
+                    .then(function () {
+                        var index = vm.checkIns.indexOf(checkIn);
+                        if (index > -1) {
+                            vm.checkIns.splice(index, 1);
+                        }
+                    });
+            });
         }
     }
 
