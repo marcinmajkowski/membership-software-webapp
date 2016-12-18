@@ -4,6 +4,7 @@
     angular
         .module("membershipSoftware")
         .config(function ($mdThemingProvider, $mdIconProvider) {
+            //TODO configure mdDateLocaleProvider
 
             $mdIconProvider
                 .defaultIconSet("./assets/svg/avatars.svg", 128)
