@@ -176,11 +176,13 @@
                 .show(dialog)
                 .then(function (userInput) {
                     var newPayment = {
-                        membershipStartDate: userInput.membershipStartDate
+                        membership: userInput.membership,
+                        membershipStartDate: userInput.membershipStartDate,
+                        payer: vm.customer
                     };
 
                     paymentsService
-                        .createPaymentFromMembershipForCustomer(newPayment, userInput.membership, vm.customer)
+                        .createPayment(newPayment)
                         .then(function (payment) {
                             vm.payments.push(payment);
                         });

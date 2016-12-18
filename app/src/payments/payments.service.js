@@ -14,7 +14,6 @@
             getPayments: getPayments,
             getPaymentsByCustomer: getPaymentsByCustomer,
             createPayment: createPayment,
-            createPaymentFromMembershipForCustomer: createPaymentFromMembershipForCustomer,
             deletePayment: deletePayment
         };
 
@@ -36,38 +35,22 @@
             });
         }
 
-        function createPayment(payment) {
-            return $http.post(paymentsUrl, payment).then(function (response) {
-                return response.data;
-            });
-        }
-
-        function createPaymentFromMembershipForCustomer(payment, membership, customer) {
-            //TODO need better api
-            var newPayment = {
-                timestamp: new Date(),
-                membershipStartDate: payment.membershipStartDate,
-                membershipEndDate: addDays(payment.membershipStartDate, membership.durationInDays),
-                membershipName: membership.name,
-                membershipPrice: membership.price,
-                membershipNumberOfTrainings: membership.numberOfTrainings,
-                payer: customer._links.self.href
+        function createPayment(newPayment) {
+            var paymentToCreate = {
+                membershipStartDate: newPayment.membershipStartDate,
+                payer: newPayment.payer._links.self.href,
+                membership: newPayment.membership._links.self.href
             };
 
-            return $http.post(paymentsUrl, newPayment).then(function (response) {
+            console.log(paymentToCreate);
+
+            return $http.post(paymentsUrl, paymentToCreate).then(function (response) {
                 return response.data;
             });
         }
 
         function deletePayment(payment) {
             return $http.delete(payment._links.self.href);
-        }
-
-        //TODO where should I put stuff like this
-        function addDays(date, days) {
-            var result = new Date(date);
-            result.setDate(result.getDate() + days);
-            return result;
         }
 
     }

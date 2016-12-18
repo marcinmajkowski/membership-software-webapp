@@ -51,15 +51,14 @@
             </md-card-actions>
         </md-card>
 
+        <!-- TODO separate card for active memberships -->
         <md-card>
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-headline">Płatności</span>
                 </md-card-title-text>
             </md-card-title>
-            <md-card-content>
-                <ms-customer-payment-list ms-payments="vm.payments"></ms-customer-payment-list>
-            </md-card-content>
+            <ms-customer-payment-list ms-payments="vm.payments"></ms-customer-payment-list>
             <md-card-actions layout="row" layout-align="end center">
                 <md-button ng-click="vm.newPayment($event)">
                     Nowa płatność
