@@ -10,14 +10,17 @@
     function CardListController() {
         var ctrl = this;
 
-        ctrl.edit = edit;
-        ctrl.remove = remove;
+        ctrl.editCard = editCard;
+        ctrl.deleteCard = deleteCard;
 
-        function edit(card) {
-            ctrl.onEdit && ctrl.onEdit({ card: card });
+        function editCard(card, event) {
+            ctrl.onEdit && ctrl.onEdit({
+                card: card,
+                event: event
+            });
         }
 
-        function remove(card, event) {
+        function deleteCard(card, event) {
             ctrl.onDelete && ctrl.onDelete({
                 card: card,
                 event: event

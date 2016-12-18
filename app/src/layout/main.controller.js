@@ -29,10 +29,13 @@
         function activate() {
             loadCustomers();
 
+            //TODO pass reference to customer/card together with event and update lists locally
+            $scope.$on('customerCreated', loadCustomers);
             $scope.$on('customerUpdated', loadCustomers);
             $scope.$on('customerDeleted', loadCustomers);
-            $scope.$on('customerCreated', loadCustomers);
-            //TODO handle card events
+            $scope.$on('cardCreated', loadCustomers);
+            $scope.$on('cardUpdated', loadCustomers);
+            $scope.$on('cardDeleted', loadCustomers);
         }
 
         function loadCustomers() {

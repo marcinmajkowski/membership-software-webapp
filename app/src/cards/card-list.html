@@ -4,10 +4,10 @@
             <p flex>
                 {{card.code}} (wydana {{card.issueTimestamp | date}})
             </p>
-            <md-button class="md-icon-button" ng-click="$ctrl.remove(card, $event)" aria-label="Usuń">
+            <md-button class="md-icon-button" ng-click="$ctrl.deleteCard(card, $event)" aria-label="Usuń">
                 <md-icon md-svg-icon="delete_forever"></md-icon>
             </md-button>
-            <md-button class="md-icon-button" ng-click="$ctrl.edit(card)" aria-label="Edytuj">
+            <md-button class="md-icon-button" ng-click="$ctrl.editCard(card, $event)" aria-label="Edytuj">
                 <md-icon md-svg-icon="mode_edit"></md-icon>
             </md-button>
         </div>

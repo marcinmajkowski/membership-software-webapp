@@ -1,11 +1,10 @@
 <md-dialog flex flex-gt-xs="50" flex-gt-sm="40" flex-gt-md="30">
     <form>
         <md-dialog-content class="md-dialog-content">
-
             <h2 class="md-title">Nowa płatność</h2>
             <md-input-container class="md-block">
                 <label>Karnet</label>
-                <md-select ng-model="vm.userInput.membership" required>
+                <md-select ng-model="vm.userInput.membership" required md-autofocus>
                     <md-option ng-repeat="membership in vm.memberships" ng-value="membership">
                         {{membership.price}} PLN - {{membership.name}} ({{membership.numberOfTrainings}} treningów)
                     </md-option>
@@ -17,12 +16,11 @@
                 <md-datepicker ng-model="vm.userInput.membershipStartDate" required style="padding-right: 25px;"></md-datepicker>
             </div>
         </md-dialog-content>
-
         <md-dialog-actions>
             <md-button ng-click="vm.cancel()" class="md-primary">
                 Anuluj
             </md-button>
-            <md-button ng-click="vm.save(vm.userInput)" class="md-primary">
+            <md-button ng-click="vm.save(vm.userInput)" class="md-primary" type="submit">
                 Zapisz
             </md-button>
         </md-dialog-actions>

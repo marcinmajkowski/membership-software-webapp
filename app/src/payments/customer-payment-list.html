@@ -7,10 +7,10 @@
             <!-- TODO jeżeli ważny to na zielono, jeżeli nie to "wygasł {data}" na szaro --> 
             <p>Ważny od {{payment.membershipStartDate | date:'dd.MM.yyyy'}} do {{payment.membershipEndDate | date:'dd.MM.yyyy'}}</p>
         </div>
-        <md-button class="md-icon-button" aria-label="Usuń" ng-click="$ctrl.deletePayment(payment)" class="md-secondary">
+        <md-button class="md-icon-button" aria-label="Usuń" ng-click="$ctrl.deletePayment(payment, $event)" class="md-secondary">
             <md-icon md-svg-icon="delete_forever"></md-icon>
         </md-button>
-        <md-button class="md-icon-button" aria-label="Edytuj" ng-click="$ctrl.editPayment(payment)" class="md-secondary">
+        <md-button class="md-icon-button" aria-label="Edytuj" ng-click="$ctrl.editPayment(payment, $event)" class="md-secondary">
             <md-icon md-svg-icon="mode_edit"></md-icon>
         </md-button>
     </md-list-item>
