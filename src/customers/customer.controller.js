@@ -201,6 +201,9 @@
             console.log('TODO CustomerController.editPayment()');
         }
 
+        //FIXME cannot delete payments with check-ins. Don't know yet how to handle it
+        //TODO view in which user can delete relation to payment all check-ins
+        //TODO toast with error info
         function deletePayment(payment, event) {
             // TODO delete button should go on the left
             var confirm = $mdDialog
@@ -226,20 +229,25 @@
         function newCheckIn(ev) {
             //TODO open dialog to select group and payment if multiple available
             var checkInToCreate = {
-                timestamp: new Date()
+                timestamp: new Date(),
+                payment: getCheckInPayment()
             };
 
             checkInsService
                 .createCheckInForCustomer(checkInToCreate, vm.customer)
                 .then(function (checkIn) {
                     vm.checkIns.push(checkIn); // TODO or reload whole list
+                    //TODO
+                    if (checkIn.paid) {
+                        loadPayments();
+                    }
                 });
         }
 
         function editCheckIn(checkIn, event) {
             console.log('TODO CustomerController.editCheckIn()');
         }
-        
+
         function deleteCheckIn(checkIn, event) {
             // TODO delete button should go on the left
             var confirm = $mdDialog
@@ -258,8 +266,61 @@
                         if (index > -1) {
                             vm.checkIns.splice(index, 1);
                         }
+                        if (checkIn.paid) {
+                            loadPayments();
+                        }
                     });
             });
+        }
+
+        /**
+         * If customer has active payments with open access, the one ending
+         * the earliest is returned. If there are no active payments with open
+         * access, the earliest ending active payment with check-ins left is
+         * returned. If there are no active payments, null is returned. 
+         */
+        function getCheckInPayment() {
+            var activePayments = vm.payments.filter(isPaymentActive);
+
+            var openAccessPayments = activePayments.filter(isPaymentOpenAccess);
+            if (openAccessPayments.length > 0) {
+                //TODO no sort necessary - need the smallest element only
+                return openAccessPayments.sort(comparePaymentEndDates)[0];
+            }
+
+            var validPayments = activePayments.filter(hasPaymentCheckInsLeft);
+            if (validPayments.length > 0) {
+                //TODO no sort necessary - need the smallest element only
+                return validPayments.sort(comparePaymentEndDates)[0];
+            }
+
+            return null;
+        }
+
+        function comparePaymentEndDates(paymentA, paymentB) {
+            return new Date(paymentA.membershipEndDate) - new Date(paymentB.membershipEndDate);
+        }
+
+        function hasPaymentCheckInsLeft(payment) {
+            // membershipNumberOfTrainings = -1 indicates no limit
+            return payment.membershipNumberOfTrainings < 0 || payment.membershipNumberOfTrainings > payment.checkInsSize;
+        }
+
+        function isPaymentOpenAccess(payment) {
+            return payment.membershipNumberOfTrainings < 0;
+        }
+
+        function isPaymentActive(payment) {
+            var startDate = new Date(payment.membershipStartDate);
+            startDate.setHours(0, 0, 0, 0);
+
+            var endDate = new Date(payment.membershipEndDate);
+            endDate.setHours(0, 0, 0, 0);
+
+            var today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            return today <= endDate && today >= startDate;
         }
     }
 

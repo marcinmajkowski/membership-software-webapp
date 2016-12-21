@@ -11,7 +11,8 @@
         var ctrl = this;
 
         ctrl.editPayment = editPayment;
-        ctrl.deletePayment = deletePayment;        
+        ctrl.deletePayment = deletePayment;
+        ctrl.whenActive = whenActive;
 
         // *********************************
         // Internal methods
@@ -31,6 +32,25 @@
             });
         }
 
+        //TODO need better solution
+        function whenActive(payment) {
+            var startDate = new Date(payment.membershipStartDate);
+            startDate.setHours(0,0,0,0);
+
+            var endDate = new Date(payment.membershipEndDate);
+            endDate.setHours(0,0,0,0);
+
+            var today = new Date();
+            today.setHours(0,0,0,0);
+
+            if (today < startDate) {
+                return "future";
+            } else if (today <= endDate) {
+                return "now";
+            } else {
+                return "past";
+            }
+        }
     }
 
 })();

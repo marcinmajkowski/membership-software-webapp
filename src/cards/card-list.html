@@ -2,7 +2,7 @@
     <md-list-item ng-repeat="card in $ctrl.cards">
         <div layout="row" flex>
             <p flex>
-                {{card.code}} (wydana {{card.issueTimestamp | date}})
+                {{card.code}} <small class="md-caption">(wydana {{card.issueTimestamp | date:'dd.MM.yyyy o HH:mm'}})</small>
             </p>
             <md-button class="md-icon-button" ng-click="$ctrl.deleteCard(card, $event)" aria-label="Usuń">
                 <md-icon md-svg-icon="delete_forever"></md-icon>

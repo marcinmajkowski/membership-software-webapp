@@ -1,7 +1,7 @@
 <md-list>
     <md-list-item ng-repeat="checkIn in $ctrl.checkIns | orderBy:'-timestamp'" ng-click="null">
         <p>
-            {{checkIn.timestamp | date:'dd.MM.yyyy o HH:mm'}}
+            {{checkIn.timestamp | date:'dd.MM.yyyy o HH:mm'}} <small class="md-caption" md-colors="{color:'warn'}" ng-if="!checkIn.paid">(nie opłacone)</small> 
         </p>
         <md-button class="md-icon-button md-secondary" aria-label="Usuń" ng-click="$ctrl.remove(checkIn, $event)">
             <md-icon md-svg-icon="delete_forever"></md-icon>
