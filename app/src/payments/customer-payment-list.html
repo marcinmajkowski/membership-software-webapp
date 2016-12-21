@@ -2,10 +2,24 @@
     <!-- TODO sort with membership end date -->
     <md-list-item ng-repeat="payment in $ctrl.payments | orderBy:'-timestamp'" class="md-3-line" ng-click="null">
         <div class="md-list-item-text" layout="column">
-            <h3>Karnet "{{payment.membershipName}}" - {{payment.membershipNumberOfTrainings > 0 ? payment.membershipNumberOfTrainings + ' treningów' : 'open'}}, ważny przez {{payment.membershipDurationInDays}} dni</h3>
+            <h3>Karnet "{{payment.membershipName}}" - {{payment.membershipNumberOfTrainings > 0 ? payment.membershipNumberOfTrainings
+                + ' treningów' : 'open'}}, ważny przez {{payment.membershipDurationInDays}} dni</h3>
             <h4>{{payment.membershipPrice}} PLN, zarejestrowano {{payment.timestamp | date:'dd.MM.yyyy o HH:mm'}}</h4>
-            <!-- TODO jeżeli ważny to na zielono, jeżeli nie to "wygasł {data}" na szaro --> 
-            <p>Ważny od {{payment.membershipStartDate | date:'dd.MM.yyyy'}} do {{payment.membershipEndDate | date:'dd.MM.yyyy'}}</p>
+            <!-- TODO jeżeli ważny to na zielono, jeżeli nie to "wygasł {data}" na szaro -->
+            <p>
+                <span ng-switch="$ctrl.whenActive(payment)">
+                    <span ng-switch-when="past">
+                        Wygasł {{payment.membershipEndDate | date:'dd.MM.yyyy'}}
+                    </span>
+                    <span ng-switch-when="now" md-colors="{color: 'green'}">
+                        Ważny do {{payment.membershipEndDate | date:'dd.MM.yyyy'}}
+                    </span>
+                    <span ng-switch-when="future" md-colors="{color: 'orange'}">
+                        Ważny od {{payment.membershipStartDate | date:'dd.MM.yyyy'}}
+                    </span>
+                </span>
+                <span ng-if="payment.membershipNumberOfTrainings > 0">(pozostało {{payment.membershipNumberOfTrainings - payment.checkInsSize}} wejść)</span>
+            </p>
         </div>
         <md-button class="md-icon-button" aria-label="Usuń" ng-click="$ctrl.deletePayment(payment, $event)" class="md-secondary">
             <md-icon md-svg-icon="delete_forever"></md-icon>

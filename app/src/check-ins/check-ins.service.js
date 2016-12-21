@@ -34,6 +34,11 @@
                 timestamp: checkIn.timestamp,
                 customer: customer._links.self.href
             };
+
+            if (checkIn.payment !== null) {
+                checkInToCreate.payment = checkIn.payment._links.self.href;
+            }
+
             return $http.post(checkInsUrl, checkInToCreate).then(function (response) {
                 return response.data;
             });
