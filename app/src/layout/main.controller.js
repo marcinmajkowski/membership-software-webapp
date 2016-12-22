@@ -49,27 +49,43 @@
         }
 
         /**
-         * Create filter function for a query string
+         * Create filter function for a query string. If query is a sequence
+         * of 12 digits, then search is performed over customers card codes.
+         * This is to handle barcode scanner input. Otherwise search is
+         * performed over customers first and last names.
          */
         function createFilterFor(query) {
-            var lowercaseQuery = angular.lowercase(query);
+            var queryIsCardCode = /^\d+$/.test(query) && query.length === 12;
 
-            //TODO card numbers
-            //TODO polish special characters
-            return function filterFn(customer) {
-                var lowercaseFirstName = angular.lowercase(customer.firstName);
-                var lowercaseLastName = angular.lowercase(customer.lastName);
-                var lowercaseFullName = lowercaseFirstName + ' ' + lowercaseLastName;
-                if (lowercaseFullName.indexOf(lowercaseQuery) === 0) {
-                    return true;
+            if (queryIsCardCode) {
+                return function cardCodeMatches(customer) {
+                    for (var i = 0; i < customer.cards.length; i++) {
+                        if (customer.cards[i].code === query) {
+                            return true;
+                        }
+                    }
+
+                    return false;
                 }
+            } else {
+                var lowercaseQuery = angular.lowercase(query);
 
-                if (lowercaseLastName.indexOf(lowercaseQuery) === 0) {
-                    return true;
-                }
+                //TODO polish special characters
+                return function fullNameMatches(customer) {
+                    var lowercaseFirstName = angular.lowercase(customer.firstName);
+                    var lowercaseLastName = angular.lowercase(customer.lastName);
+                    var lowercaseFullName = lowercaseFirstName + ' ' + lowercaseLastName;
+                    if (lowercaseFullName.indexOf(lowercaseQuery) === 0) {
+                        return true;
+                    }
 
-                return false;
-            };
+                    if (lowercaseLastName.indexOf(lowercaseQuery) === 0) {
+                        return true;
+                    }
+
+                    return false;
+                };
+            }
         }
 
         function selectedCustomerChange(customer) {

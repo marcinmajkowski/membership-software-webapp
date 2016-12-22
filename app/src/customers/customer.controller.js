@@ -123,7 +123,8 @@
                 .prompt()
                 .title('Nowa karta')
                 .textContent('Wpisz numer znajdujący się pod kodem kreskowym na karcie.')
-                .placeholder('0000000000000')
+                //TODO set maximum length to 12
+                .placeholder('00000000000000')
                 .ariaLabel('Numer karty')
                 .targetEvent(ev)
                 .ok('Zapisz')
@@ -132,8 +133,10 @@
             $mdDialog
                 .show(prompt)
                 .then(function (code) {
+                    var pad = "000000000000";
+                    var paddedCode = pad.substring(0, pad.length - code.length) + code;
                     customersService
-                        .createCardForCustomerByCode(owner, code)
+                        .createCardForCustomerByCode(owner, paddedCode)
                         .then(function (newCard) {
                             vm.cards.push(newCard);
                         }, function () {
