@@ -19,6 +19,7 @@
         vm.go = go;
         vm.newCustomer = newCustomer;
         vm.customers = [];
+        vm.customersLoading = false;
         vm.findCustomer = findCustomer;
 
         activate();
@@ -40,9 +41,16 @@
         }
 
         function loadCustomers() {
-            customersService.getCustomersProjection('firstNameAndLastNameAndCards').then(function (customers) {
-                vm.customers = [].concat(customers);
-            });
+            vm.customersLoading = true;
+            customersService
+                .getCustomersProjection('firstNameAndLastNameAndCards')
+                .then(function (customers) {
+                    vm.customersLoading = false;
+                    vm.customers = [].concat(customers);
+                }, function () {
+                    vm.customersLoading = false;
+                    //TODO report error
+                });
         }
 
         function customersQuerySearch(query) {

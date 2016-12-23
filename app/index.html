@@ -125,6 +125,9 @@
                     <p>{{customer.firstName + " " + customer.lastName}}</p>
                 </md-list-item>
             </md-list>
+            <div layout="column" flex layout-align="center center" ng-show="vm.customersLoading">
+                <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+            </div>
         </md-sidenav>
 
         <md-content flex ng-view></md-content>
