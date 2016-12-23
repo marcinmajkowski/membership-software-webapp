@@ -22,15 +22,27 @@
             <textarea ng-model="vm.customer.note" md-maxlength="150" rows="5"></textarea>
         </md-input-container>
     </md-card-content>
-    <md-card-actions layout="row" layout-align="end center">
-        <!-- TODO toggle edit mode -->
-        <md-button class="md-warn" ng-click="vm.deleteCustomer($event, vm.customer)">
-            Usuń klienta
-        </md-button>
-        <md-button ng-click="vm.updateCustomer($event, vm.customer, vm.customer)">
-            Zapisz zmiany
-        </md-button>
-    </md-card-actions>
+    <!--<md-card-actions>-->
+    <div layout="row">
+        <div layout="row" layout-xs="column" flex="50" flex-xs>
+            <md-button ng-click="vm.newCheckIn($event)">
+                Nowe wejście
+            </md-button>
+            <md-button ng-click="vm.newPayment($event)">
+                Nowa płatność
+            </md-button>
+        </div>
+        <div layout="row" layout-xs="column" flex="50" flex-xs layout-align="end center">
+            <md-button class="md-warn" ng-click="vm.deleteCustomer($event, vm.customer)">
+                Usuń klienta
+            </md-button>
+            <md-button ng-click="vm.updateCustomer($event, vm.customer, vm.customer)">
+                Zapisz zmiany
+            </md-button>
+        </div>
+    </div>
+    <!-- TODO toggle edit mode -->
+    <!--</md-card-actions>-->
 </md-card>
 
 <div layout="column" layout-gt-md="row">
@@ -44,7 +56,7 @@
             <md-card-content>
                 <ms-card-list ms-cards="vm.cards" ms-on-edit="vm.editCard(card, event)" ms-on-delete="vm.deleteCard(card, event)"></ms-card-list>
             </md-card-content>
-            <md-card-actions layout="row" layout-align="end center">
+            <md-card-actions>
                 <md-button ng-click="vm.newCard($event, vm.customer)">
                     Nowa karta
                 </md-button>
@@ -59,10 +71,10 @@
                 </md-card-title-text>
             </md-card-title>
             <ms-customer-payment-list ms-payments="vm.payments" ms-on-edit="vm.editPayment(payment, event)" ms-on-delete="vm.deletePayment(payment, event)"></ms-customer-payment-list>
-            <md-card-actions layout="row" layout-align="end center">
-                <md-button ng-click="vm.newPayment($event)">
-                    Nowa płatność
-                </md-button>
+            <md-card-actions layout="row">
+                <a href class="md-button" ng-click="null" flex>
+                    Pokaż więcej
+                </a>
             </md-card-actions>
         </md-card>
     </div>
@@ -75,10 +87,10 @@
                 </md-card-title-text>
             </md-card-title>
             <ms-check-in-list ms-check-ins="vm.checkIns" ms-on-edit="vm.editCheckIn(checkIn, event)" ms-on-delete="vm.deleteCheckIn(checkIn, event)"></ms-check-in-list>
-            <md-card-actions layout="row" layout-align="end center">
-                <md-button ng-click="vm.newCheckIn($event)">
-                    Nowe wejście
-                </md-button>
+            <md-card-actions layout="row">
+                <a href class="md-button" ng-click="null" flex>
+                    Pokaż więcej
+                </a>
             </md-card-actions>
         </md-card>
     </div>

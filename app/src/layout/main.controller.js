@@ -15,6 +15,7 @@
         vm.customersQuerySearch = customersQuerySearch;
         vm.selectedCustomerChange = selectedCustomerChange
         vm.toggleList = toggleCustomersList;
+        vm.selectCustomer = selectCustomer;
         vm.go = go;
         vm.newCustomer = newCustomer;
         vm.customers = [];
@@ -104,6 +105,10 @@
             $mdSidenav('left').toggle();
         }
 
+        function closeCustomerList() {
+            $mdSidenav('left').close();
+        }
+
         /**
          * Use ng-click="go('/home')" instead of ng-href="#/home".
          * This is workaround for wrongly displayed md-button with href attribute.
@@ -127,7 +132,9 @@
                 customersService.createCustomer(newCustomer).then(function (customer) {
                     var code = userInput.code;
                     if (code && 0 !== code.length) {
-                        customersService.createCardForCustomerByCode(customer, code).then(function () {
+                        var pad = "000000000000";
+                        var paddedCode = pad.substring(0, pad.length - code.length) + code;
+                        customersService.createCardForCustomerByCode(customer, paddedCode).then(function () {
                             selectCustomer(customer);
                         });
                     } else {
@@ -135,13 +142,14 @@
                     }
                 });
 
-                function selectCustomer(customer) {
-                    $location.path('/customer/' + customer.id);
-                }
-
                 //TODO report error
 
             });
+        }
+
+        function selectCustomer(customer) {
+            closeCustomerList();
+            $location.path('/customer/' + customer.id);
         }
 
         function findCustomer() {

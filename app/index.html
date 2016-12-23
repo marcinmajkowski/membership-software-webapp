@@ -121,7 +121,7 @@
             <md-list>
                 <md-subheader class="md-no-sticky">Klienci</md-subheader>
                 <!-- TODO sort by last visit date, load asynchronously -->
-                <md-list-item ng-repeat="customer in vm.customers" ng-click="vm.go('/customer/' + customer.id)">
+                <md-list-item ng-repeat="customer in vm.customers" ng-click="vm.selectCustomer(customer)">
                     <p>{{customer.firstName + " " + customer.lastName}}</p>
                 </md-list-item>
             </md-list>
