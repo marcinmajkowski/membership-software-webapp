@@ -9,12 +9,14 @@
 
     function checkInsService($http, apiUrl) {
         var checkInsUrl = apiUrl + '/checkIns';
+        var requestsInProgress = 0;
 
         var service = {
             getCheckIns: getCheckIns,
             createCheckInForCustomer: createCheckInForCustomer,
             deleteCheckIn: deleteCheckIn,
-            readCheckInsByCustomer: readCheckInsByCustomer
+            readCheckInsByCustomer: readCheckInsByCustomer,
+            isRequestInProgress: isRequestInProgress
         };
 
         return service;
@@ -24,9 +26,16 @@
         // *********************************
 
         function getCheckIns() {
-            return $http.get(checkInsUrl).then(function (response) {
-                return response.data._embedded.checkIns;
-            });
+            requestsInProgress++;
+            return $http
+                .get(checkInsUrl)
+                .then(function (response) {
+                    requestsInProgress--;
+                    return response.data._embedded.checkIns;
+                }, function () {
+                    //TODO report error
+                    requestsInProgress--;
+                });
         }
 
         function createCheckInForCustomer(checkIn, customer) {
@@ -39,19 +48,45 @@
                 checkInToCreate.payment = checkIn.payment._links.self.href;
             }
 
-            return $http.post(checkInsUrl, checkInToCreate).then(function (response) {
-                return response.data;
-            });
+            requestsInProgress++;
+            return $http
+                .post(checkInsUrl, checkInToCreate)
+                .then(function (response) {
+                    requestsInProgress--;
+                    return response.data;
+                }, function () {
+                    //TODO report error
+                    requestsInProgress--;
+                });
         }
 
         function deleteCheckIn(checkIn) {
-            return $http.delete(checkIn._links.self.href);
+            requestsInProgress++;
+            return $http
+                .delete(checkIn._links.self.href)
+                .then(function () {
+                    requestsInProgress--;
+                }, function () {
+                    //TODO report error
+                    requestsInProgress--;
+                });
         }
 
         function readCheckInsByCustomer(customer) {
-            return $http.get(customer._links.checkIns.href).then(function (response) {
-                return response.data._embedded.checkIns;
-            });
+            requestsInProgress++;
+            return $http
+                .get(customer._links.checkIns.href)
+                .then(function (response) {
+                    requestsInProgress--;
+                    return response.data._embedded.checkIns;
+                }, function () {
+                    //TODO report error
+                    requestsInProgress--;
+                });
+        }
+
+        function isRequestInProgress() {
+            return requestsInProgress != 0;
         }
 
     }

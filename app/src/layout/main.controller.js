@@ -5,10 +5,10 @@
         .module('membershipSoftwareLayout')
         .controller('MainController', MainController);
 
-    MainController.$inject = ['customersService', '$mdSidenav', '$location', '$mdDialog', '$scope'];
+    MainController.$inject = ['customersService', 'cardsService', '$mdSidenav', '$location', '$mdDialog', '$scope'];
 
     //TODO handle events to maintain sidebar list (or better get rid of it)
-    function MainController(customersService, $mdSidenav, $location, $mdDialog, $scope) {
+    function MainController(customersService, cardsService, $mdSidenav, $location, $mdDialog, $scope) {
         var vm = this;
 
         vm.autocomplete = {};
@@ -19,7 +19,8 @@
         vm.go = go;
         vm.newCustomer = newCustomer;
         vm.customers = [];
-        vm.customersLoading = false;
+        vm.isCustomersRequestInProgress = customersService.isRequestInProgress;
+        vm.isCardsRequestInProgress = cardsService.isRequestInProgress;
         vm.findCustomer = findCustomer;
 
         activate();
@@ -41,14 +42,11 @@
         }
 
         function loadCustomers() {
-            vm.customersLoading = true;
             customersService
                 .getCustomersProjection('firstNameAndLastNameAndCards')
                 .then(function (customers) {
-                    vm.customersLoading = false;
                     vm.customers = [].concat(customers);
                 }, function () {
-                    vm.customersLoading = false;
                     //TODO report error
                 });
         }

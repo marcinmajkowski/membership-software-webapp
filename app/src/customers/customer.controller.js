@@ -18,17 +18,20 @@
         vm.deleteCustomer = deleteCustomer;
 
         vm.cards = [];
+        vm.isCardsRequestInProgress = cardsService.isRequestInProgress;
         vm.newCard = newCard;
         vm.editCard = editCard;
         vm.deleteCard = deleteCard;
 
         vm.payments = [];
+        vm.isPaymentsRequestInProgress = paymentsService.isRequestInProgress;
         vm.newPayment = newPayment;
         //TODO probably should handle editing inside component and call update here
         vm.editPayment = editPayment;
         vm.deletePayment = deletePayment;
 
         vm.checkIns = [];
+        vm.isCheckInsRequestInProgress = checkInsService.isRequestInProgress;
         vm.newCheckIn = newCheckIn;
         vm.editCheckIn = editCheckIn;
         vm.deleteCheckIn = deleteCheckIn;
@@ -59,6 +62,8 @@
                 .readCardsByCustomer(vm.customer)
                 .then(function (cards) {
                     vm.cards = [].concat(cards);
+                }, function () {
+                    //TODO report error
                 });
         }
 
@@ -67,6 +72,8 @@
                 .getPaymentsByCustomer(vm.customer)
                 .then(function (payments) {
                     vm.payments = [].concat(payments);
+                }, function () {
+                    //TODO report error
                 });
         }
 
@@ -75,6 +82,8 @@
                 .readCheckInsByCustomer(vm.customer)
                 .then(function (checkIns) {
                     vm.checkIns = [].concat(checkIns);
+                }, function () {
+                    //TODO report error
                 });
         }
 
@@ -138,7 +147,7 @@
                     customersService
                         .createCardForCustomerByCode(owner, paddedCode)
                         .then(function (newCard) {
-                            vm.cards.push(newCard);
+                            loadCards();
                         }, function () {
                             console.log('TODO report card not created error');
                         });
@@ -159,10 +168,7 @@
                 cardsService
                     .deleteCard(card)
                     .then(function () {
-                        var index = vm.cards.indexOf(card);
-                        if (index > -1) {
-                            vm.cards.splice(index, 1);
-                        }
+                        loadCards();
                     });
             });
         }
@@ -193,7 +199,7 @@
                     paymentsService
                         .createPayment(newPayment)
                         .then(function (payment) {
-                            vm.payments.push(payment);
+                            loadPayments();
                         });
 
                     //TODO report error
@@ -221,10 +227,7 @@
                 paymentsService
                     .deletePayment(payment)
                     .then(function () {
-                        var index = vm.payments.indexOf(payment);
-                        if (index > -1) {
-                            vm.payments.splice(index, 1);
-                        }
+                        loadPayments();
                     });
             });
         }
@@ -239,7 +242,7 @@
             checkInsService
                 .createCheckInForCustomer(checkInToCreate, vm.customer)
                 .then(function (checkIn) {
-                    vm.checkIns.push(checkIn); // TODO or reload whole list
+                    loadCheckIns();
                     //TODO
                     if (checkIn.paid) {
                         loadPayments();
@@ -265,10 +268,7 @@
                 checkInsService
                     .deleteCheckIn(checkIn)
                     .then(function () {
-                        var index = vm.checkIns.indexOf(checkIn);
-                        if (index > -1) {
-                            vm.checkIns.splice(index, 1);
-                        }
+                        loadCheckIns();
                         if (checkIn.paid) {
                             loadPayments();
                         }
@@ -300,6 +300,7 @@
             return null;
         }
 
+        //FIXME returned order is probably incorrect
         function comparePaymentEndDates(paymentA, paymentB) {
             return new Date(paymentA.membershipEndDate) - new Date(paymentB.membershipEndDate);
         }
