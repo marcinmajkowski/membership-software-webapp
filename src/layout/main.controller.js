@@ -5,19 +5,22 @@
         .module('membershipSoftwareLayout')
         .controller('MainController', MainController);
 
-    MainController.$inject = ['customersService', '$mdSidenav', '$location', '$mdDialog', '$scope'];
+    MainController.$inject = ['customersService', 'cardsService', '$mdSidenav', '$location', '$mdDialog', '$scope'];
 
     //TODO handle events to maintain sidebar list (or better get rid of it)
-    function MainController(customersService, $mdSidenav, $location, $mdDialog, $scope) {
+    function MainController(customersService, cardsService, $mdSidenav, $location, $mdDialog, $scope) {
         var vm = this;
 
         vm.autocomplete = {};
         vm.customersQuerySearch = customersQuerySearch;
         vm.selectedCustomerChange = selectedCustomerChange
         vm.toggleList = toggleCustomersList;
+        vm.selectCustomer = selectCustomer;
         vm.go = go;
         vm.newCustomer = newCustomer;
         vm.customers = [];
+        vm.isCustomersRequestInProgress = customersService.isRequestInProgress;
+        vm.isCardsRequestInProgress = cardsService.isRequestInProgress;
         vm.findCustomer = findCustomer;
 
         activate();
@@ -39,9 +42,13 @@
         }
 
         function loadCustomers() {
-            customersService.getCustomersProjection('firstNameAndLastNameAndCards').then(function (customers) {
-                vm.customers = [].concat(customers);
-            });
+            customersService
+                .getCustomersProjection('firstNameAndLastNameAndCards')
+                .then(function (customers) {
+                    vm.customers = [].concat(customers);
+                }, function () {
+                    //TODO report error
+                });
         }
 
         function customersQuerySearch(query) {
@@ -49,27 +56,43 @@
         }
 
         /**
-         * Create filter function for a query string
+         * Create filter function for a query string. If query is a sequence
+         * of 12 digits, then search is performed over customers card codes.
+         * This is to handle barcode scanner input. Otherwise search is
+         * performed over customers first and last names.
          */
         function createFilterFor(query) {
-            var lowercaseQuery = angular.lowercase(query);
+            var queryIsCardCode = /^\d+$/.test(query) && query.length === 12;
 
-            //TODO card numbers
-            //TODO polish special characters
-            return function filterFn(customer) {
-                var lowercaseFirstName = angular.lowercase(customer.firstName);
-                var lowercaseLastName = angular.lowercase(customer.lastName);
-                var lowercaseFullName = lowercaseFirstName + ' ' + lowercaseLastName;
-                if (lowercaseFullName.indexOf(lowercaseQuery) === 0) {
-                    return true;
+            if (queryIsCardCode) {
+                return function cardCodeMatches(customer) {
+                    for (var i = 0; i < customer.cards.length; i++) {
+                        if (customer.cards[i].code === query) {
+                            return true;
+                        }
+                    }
+
+                    return false;
                 }
+            } else {
+                var lowercaseQuery = angular.lowercase(query);
 
-                if (lowercaseLastName.indexOf(lowercaseQuery) === 0) {
-                    return true;
-                }
+                //TODO polish special characters
+                return function fullNameMatches(customer) {
+                    var lowercaseFirstName = angular.lowercase(customer.firstName);
+                    var lowercaseLastName = angular.lowercase(customer.lastName);
+                    var lowercaseFullName = lowercaseFirstName + ' ' + lowercaseLastName;
+                    if (lowercaseFullName.indexOf(lowercaseQuery) === 0) {
+                        return true;
+                    }
 
-                return false;
-            };
+                    if (lowercaseLastName.indexOf(lowercaseQuery) === 0) {
+                        return true;
+                    }
+
+                    return false;
+                };
+            }
         }
 
         function selectedCustomerChange(customer) {
@@ -86,6 +109,10 @@
          */
         function toggleCustomersList() {
             $mdSidenav('left').toggle();
+        }
+
+        function closeCustomerList() {
+            $mdSidenav('left').close();
         }
 
         /**
@@ -111,7 +138,9 @@
                 customersService.createCustomer(newCustomer).then(function (customer) {
                     var code = userInput.code;
                     if (code && 0 !== code.length) {
-                        customersService.createCardForCustomerByCode(customer, code).then(function () {
+                        var pad = "000000000000";
+                        var paddedCode = pad.substring(0, pad.length - code.length) + code;
+                        customersService.createCardForCustomerByCode(customer, paddedCode).then(function () {
                             selectCustomer(customer);
                         });
                     } else {
@@ -119,13 +148,14 @@
                     }
                 });
 
-                function selectCustomer(customer) {
-                    $location.path('/customer/' + customer.id);
-                }
-
                 //TODO report error
 
             });
+        }
+
+        function selectCustomer(customer) {
+            closeCustomerList();
+            $location.path('/customer/' + customer.id);
         }
 
         function findCustomer() {

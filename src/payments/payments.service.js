@@ -9,12 +9,14 @@
 
     function paymentsService($http, apiUrl) {
         var paymentsUrl = apiUrl + '/payments';
+        var requestsInProgress = 0;
 
         var service = {
             getPayments: getPayments,
             getPaymentsByCustomer: getPaymentsByCustomer,
             createPayment: createPayment,
-            deletePayment: deletePayment
+            deletePayment: deletePayment,
+            isRequestInProgress: isRequestInProgress
         };
 
         return service;
@@ -24,15 +26,29 @@
         // *********************************
 
         function getPayments() {
-            return $http.get(paymentsUrl + '?projection=payerAndMembershipPriceAndTimestamp').then(function (response) {
-                return response.data._embedded.payments;
-            });
+            requestsInProgress++;
+            return $http
+                .get(paymentsUrl + '?projection=payerAndMembershipPriceAndTimestamp')
+                .then(function (response) {
+                    requestsInProgress--;
+                    return response.data._embedded.payments;
+                }, function () {
+                    //TODO report error;
+                    requestsInProgress--;
+                });
         }
 
         function getPaymentsByCustomer(customer) {
-            return $http.get(customer._links.payments.href).then(function (response) {
-                return response.data._embedded.payments;
-            });
+            requestsInProgress++;
+            return $http
+                .get(customer._links.payments.href)
+                .then(function (response) {
+                    requestsInProgress--;
+                    return response.data._embedded.payments;
+                }, function () {
+                    //TODO report error
+                    requestsInProgress--;
+                });
         }
 
         function createPayment(newPayment) {
@@ -42,15 +58,24 @@
                 membership: newPayment.membership._links.self.href
             };
 
-            console.log(paymentToCreate);
-
-            return $http.post(paymentsUrl, paymentToCreate).then(function (response) {
-                return response.data;
-            });
+            requestsInProgress++;
+            return $http
+                .post(paymentsUrl, paymentToCreate)
+                .then(function (response) {
+                    requestsInProgress--;
+                    return response.data;
+                }, function () {
+                    //TODO report error
+                    requestsInProgress--;
+                });
         }
 
         function deletePayment(payment) {
             return $http.delete(payment._links.self.href);
+        }
+
+        function isRequestInProgress() {
+            return requestsInProgress != 0;
         }
 
     }

@@ -9,6 +9,8 @@
 
     function customersService($http, apiUrl, cardsService, $rootScope) {
         var customersUrl = apiUrl + '/customers';
+        //TODO probably some kind of interceptor would be more suitable
+        var requestsInProgress = 0;
 
         var service = {
             readById: readById,
@@ -17,7 +19,8 @@
             updateCustomer: updateCustomer,
             deleteCustomer: deleteCustomer,
             //TODO better naming
-            getCustomersProjection: getCustomersProjection
+            getCustomersProjection: getCustomersProjection,
+            isRequestInProgress: isRequestInProgress
         };
 
         activate();
@@ -32,19 +35,34 @@
         }
 
         function readById(id) {
-            return $http.get(customersUrl + '/' + id).then(function (response) {
-                return response.data;
-            });
+            requestsInProgress++;
+            return $http
+                .get(customersUrl + '/' + id)
+                .then(function (response) {
+                    requestsInProgress--;
+                    return response.data;
+                }, function () {
+                    //TODO report error
+                    requestsInProgress--;
+                });
         }
 
         function createCustomer(customer) {
-            return $http.post(customersUrl, customer).then(function (response) {
-                //TODO pass data to event
-                $rootScope.$broadcast('customerCreated');
-                return response.data;
-            });
+            requestsInProgress++;
+            return $http
+                .post(customersUrl, customer)
+                .then(function (response) {
+                    requestsInProgress--;
+                    //TODO pass data to event
+                    $rootScope.$broadcast('customerCreated');
+                    return response.data;
+                }, function () {
+                    //TODO report error
+                    requestsInProgress--;
+                });
         }
 
+        //TODO remove?
         function createCardForCustomerByCode(customer, code) {
             var cardToCreate = {
                 code: code,
@@ -59,27 +77,51 @@
         }
 
         function updateCustomer(oldCustomer, newCustomer) {
-            return $http.patch(oldCustomer._links.self.href, newCustomer).then(function (response) {
-                var updatedCustomer = response.data;
-                //TODO pass data to event
-                $rootScope.$broadcast('customerUpdated');
-                return updatedCustomer;
-            });
+            requestsInProgress++;
+            return $http
+                .patch(oldCustomer._links.self.href, newCustomer)
+                .then(function (response) {
+                    requestsInProgress--;
+                    var updatedCustomer = response.data;
+                    //TODO pass data to event
+                    $rootScope.$broadcast('customerUpdated');
+                    return updatedCustomer;
+                }, function () {
+                    //TODO report error
+                    requestsInProgress--;
+                });
         }
 
         function deleteCustomer(customer) {
-            return $http.delete(customer._links.self.href).then(function () {
-                //TODO pass data to event
-                $rootScope.$broadcast('customerDeleted');
-            });
+            requestsInProgress++;
+            return $http
+                .delete(customer._links.self.href)
+                .then(function () {
+                    requestsInProgress--;
+                    //TODO pass data to event
+                    $rootScope.$broadcast('customerDeleted');
+                }, function () {
+                    //TODO report erorr
+                    requestsInProgress--;
+                });
         }
 
         function getCustomersProjection(projection) {
-            return $http.get(customersUrl + '?projection=' + projection).then(function (response) {
-                return response.data._embedded.customers;
-            });
+            requestsInProgress++;
+            return $http
+                .get(customersUrl + '?projection=' + projection)
+                .then(function (response) {
+                    requestsInProgress--;
+                    return response.data._embedded.customers;
+                }, function () {
+                    //TODO report error
+                    requestsInProgress--;
+                });
         }
 
+        function isRequestInProgress() {
+            return requestsInProgress != 0;
+        }
     }
 
 })();

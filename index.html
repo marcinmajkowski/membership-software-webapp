@@ -117,11 +117,14 @@
             <md-button aria-label="Nowy klient" class="md-fab md-fab-top-right md-primary" ng-click="vm.newCustomer($event)">
                 <md-icon md-svg-icon="person_add"></md-icon>
             </md-button>
-
             <md-list>
-                <md-subheader class="md-no-sticky">Klienci</md-subheader>
+                <md-subheader class="md-no-sticky">
+                    Klienci
+                </md-subheader>
+                <!-- TODO remove the gap between subheader and first item caused by disabled progress-linear -->
+                <md-progress-linear md-mode="indeterminate" ng-disabled="!vm.isCustomersRequestInProgress() && !vm.isCardsRequestInProgress()"></md-progress-linear>
                 <!-- TODO sort by last visit date, load asynchronously -->
-                <md-list-item ng-repeat="customer in vm.customers" ng-click="vm.go('/customer/' + customer.id)">
+                <md-list-item ng-repeat="customer in vm.customers" ng-click="vm.selectCustomer(customer)">
                     <p>{{customer.firstName + " " + customer.lastName}}</p>
                 </md-list-item>
             </md-list>
