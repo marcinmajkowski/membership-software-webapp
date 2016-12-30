@@ -38,10 +38,16 @@
                 });
         }
 
-        function getPaymentsByCustomer(customer) {
+        function getPaymentsByCustomer(customer, pagination) {
+            var params = {
+                payer: customer._links.self.href,
+                sort: 'timestamp,desc',
+                size: pagination.size,
+                page: pagination.page
+            };
             requestsInProgress++;
             return $http
-                .get(customer._links.payments.href)
+                .get(paymentsUrl + '/search/findByPayer/', { params: params })
                 .then(function (response) {
                     requestsInProgress--;
                     return response.data._embedded.payments;

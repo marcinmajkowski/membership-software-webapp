@@ -29,12 +29,18 @@
         //TODO probably should handle editing inside component and call update here
         vm.editPayment = editPayment;
         vm.deletePayment = deletePayment;
+        vm.paymentsPagination = { size: 3, page: 0 };
+        vm.showMorePayments = showMorePayments;
+        vm.isMorePayments = true;
 
         vm.checkIns = [];
         vm.isCheckInsRequestInProgress = checkInsService.isRequestInProgress;
         vm.newCheckIn = newCheckIn;
         vm.editCheckIn = editCheckIn;
         vm.deleteCheckIn = deleteCheckIn;
+        vm.checkInsPagination = { size: 6, page: 0 };
+        vm.showMoreCheckIns = showMoreCheckIns;
+        vm.isMoreCheckIns = true;
 
         activate();
 
@@ -69,9 +75,12 @@
 
         function loadPayments() {
             paymentsService
-                .getPaymentsByCustomer(vm.customer)
+                .getPaymentsByCustomer(vm.customer, vm.paymentsPagination)
                 .then(function (payments) {
                     vm.payments = [].concat(payments);
+                    //TODO with fixed showMorePayments() following will no longer be valid
+                    //TODO use page.totalElements from /payments response
+                    vm.isMorePayments = vm.paymentsPagination.size == payments.length;
                 }, function () {
                     //TODO report error
                 });
@@ -79,9 +88,12 @@
 
         function loadCheckIns() {
             checkInsService
-                .readCheckInsByCustomer(vm.customer)
+                .readCheckInsByCustomer(vm.customer, vm.checkInsPagination)
                 .then(function (checkIns) {
                     vm.checkIns = [].concat(checkIns);
+                    //TODO with fixed showMoreCheckIns() following will no longer be valid
+                    //TODO use page.totalElements from /checkIns response
+                    vm.isMoreCheckIns = vm.checkInsPagination.size == checkIns.length;
                 }, function () {
                     //TODO report error
                 });
@@ -232,6 +244,12 @@
             });
         }
 
+        //TODO do not load all payments again, increase page instead
+        function showMorePayments() {
+            vm.paymentsPagination.size += 3;
+            loadPayments();
+        }
+
         function newCheckIn(ev) {
             //TODO open dialog to select group and payment if multiple available
             var checkInToCreate = {
@@ -276,12 +294,20 @@
             });
         }
 
+        //TODO do not load all checkIns again, increase page instead
+        function showMoreCheckIns() {
+            vm.checkInsPagination.size += 6;
+            loadCheckIns();
+        }
+
         /**
          * If customer has active payments with open access, the one ending
          * the earliest is returned. If there are no active payments with open
          * access, the earliest ending active payment with check-ins left is
          * returned. If there are no active payments, null is returned. 
          */
+        //FIXME use service to get proper payment since vm.payments no longer
+        //FIXME contain all available payments!
         function getCheckInPayment() {
             var activePayments = vm.payments.filter(isPaymentActive);
 
