@@ -28,7 +28,7 @@
         function getCheckIns() {
             requestsInProgress++;
             return $http
-                .get(checkInsUrl)
+                .get(checkInsUrl + '/?sort=timestamp,desc')
                 .then(function (response) {
                     requestsInProgress--;
                     return response.data._embedded.checkIns;
@@ -72,10 +72,16 @@
                 });
         }
 
-        function readCheckInsByCustomer(customer) {
+        function readCheckInsByCustomer(customer, pagination) {
+            var params = {
+                customer: customer._links.self.href,
+                sort: 'timestamp,desc',
+                size: pagination.size,
+                page: pagination.page
+            };
             requestsInProgress++;
             return $http
-                .get(customer._links.checkIns.href)
+                .get(checkInsUrl + '/search/findByCustomer/', { params: params })
                 .then(function (response) {
                     requestsInProgress--;
                     return response.data._embedded.checkIns;
