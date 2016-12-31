@@ -14,6 +14,7 @@
         var service = {
             getPayments: getPayments,
             getPaymentsByCustomer: getPaymentsByCustomer,
+            getPaymentsValidTodayByCustomer: getPaymentsValidTodayByCustomer,
             createPayment: createPayment,
             deletePayment: deletePayment,
             isRequestInProgress: isRequestInProgress
@@ -48,6 +49,22 @@
             requestsInProgress++;
             return $http
                 .get(paymentsUrl + '/search/findByPayer/', { params: params })
+                .then(function (response) {
+                    requestsInProgress--;
+                    return response.data._embedded.payments;
+                }, function () {
+                    //TODO report error
+                    requestsInProgress--;
+                });
+        }
+
+        function getPaymentsValidTodayByCustomer(customer) {
+            var params = {
+                payer: customer._links.self.href,
+            };
+            requestsInProgress++;
+            return $http
+                .get(paymentsUrl + '/search/findValidTodayByPayer/', { params: params })
                 .then(function (response) {
                     requestsInProgress--;
                     return response.data._embedded.payments;
