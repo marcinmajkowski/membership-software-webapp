@@ -47,6 +47,7 @@
 
 <div layout="column" layout-gt-md="row">
     <div layout="column" flex flex-gt-md="50">
+        <!-- TODO hide cards for instance in some modal -->
         <md-card>
             <md-progress-linear md-mode="indeterminate" ng-disabled="!vm.isCardsRequestInProgress()"></md-progress-linear>
             <!-- original padding was 24px but md-progress-linear height is 5px -->
@@ -56,7 +57,7 @@
                 </md-card-title-text>
             </md-card-title>
             <md-card-actions layout="row">
-                <a href class="md-button" ng-click="vm.newCard($event, vm.customer)" flex>
+                <a href class="md-button md-primary" ng-click="vm.newCard($event, vm.customer)">
                     Nowa karta
                 </a>
             </md-card-actions>
@@ -76,7 +77,7 @@
                 </md-card-title-text>
             </md-card-title>
             <md-card-actions layout="row">
-                <a href class="md-button" ng-click="vm.newPayment($event)" flex>
+                <a href class="md-button md-primary" ng-click="vm.newPayment($event)">
                     Nowa płatność
                 </a>
             </md-card-actions>
@@ -100,7 +101,7 @@
                 </md-card-title-text>
             </md-card-title>
             <md-card-actions layout="row">
-                <a href class="md-button" ng-click="vm.newCheckIn($event)" flex>
+                <a href class="md-button md-primary" ng-click="vm.newCheckIn($event)">
                     Nowe wejście
                 </a>
             </md-card-actions>
