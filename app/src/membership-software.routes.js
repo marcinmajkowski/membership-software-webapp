@@ -10,6 +10,11 @@
                     controller: 'PaymentsController',
                     controllerAs: 'vm'
                 })
+                .when('/payments/:id', {
+                    templateUrl: 'src/payments/payment.html',
+                    controller: 'PaymentController',
+                    controllerAs: 'vm'
+                })
                 .when('/check-ins', {
                     templateUrl: 'src/check-ins/check-ins.html',
                     controller: 'CheckInsController',

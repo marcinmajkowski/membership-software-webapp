@@ -1,0 +1,15 @@
+<md-card>
+    <md-toolbar>
+        <!-- TODO real breadcrumb aware of previous location -->
+        <div class="md-toolbar-tools">
+            <h2>
+                <a href="#/customers/{{vm.payment.payer.id}}">{{ vm.payment.payer.firstName + " " + vm.payment.payer.lastName }}</a>
+                <md-icon md-svg-icon="navigate_next_white"></md-icon>
+                {{ '"' + vm.payment.membershipName + '" z ' + (vm.payment.timestamp | date:'dd.MM.yyyy') }}
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-card-content>
+        <p>Szczegóły płatności oraz lista wejść.</p>
+    </md-card-content>
+</md-card>

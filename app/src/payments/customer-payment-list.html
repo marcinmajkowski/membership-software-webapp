@@ -1,6 +1,6 @@
 <md-list>
     <!-- TODO sort with membership end date -->
-    <md-list-item ng-repeat="payment in $ctrl.payments | orderBy:'-timestamp'" class="md-3-line" ng-click="null">
+    <md-list-item ng-repeat="payment in $ctrl.payments | orderBy:'-timestamp'" class="md-3-line" ng-href="#/payments/{{payment.id}}">
         <div class="md-list-item-text" layout="column">
             <h3>Karnet "{{payment.membershipName}}" - {{payment.membershipNumberOfTrainings > 0 ? payment.membershipNumberOfTrainings
                 + ' treningów' : 'open'}}, ważny przez {{payment.membershipDurationInDays}} dni</h3>
@@ -21,10 +21,10 @@
                 <span ng-if="payment.membershipNumberOfTrainings > 0">(pozostało {{payment.membershipNumberOfTrainings - payment.checkInsSize}} wejść)</span>
             </p>
         </div>
-        <md-button class="md-icon-button" aria-label="Usuń" ng-click="$ctrl.deletePayment(payment, $event)" class="md-secondary">
+        <md-button class="md-icon-button md-secondary" aria-label="Usuń" ng-click="$ctrl.deletePayment(payment, $event)">
             <md-icon md-svg-icon="delete_forever"></md-icon>
         </md-button>
-        <md-button class="md-icon-button" aria-label="Edytuj" ng-click="$ctrl.editPayment(payment, $event)" class="md-secondary">
+        <md-button class="md-icon-button md-secondary" aria-label="Edytuj" ng-click="$ctrl.editPayment(payment, $event)">
             <md-icon md-svg-icon="mode_edit"></md-icon>
         </md-button>
     </md-list-item>

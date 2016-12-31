@@ -12,9 +12,11 @@
         var requestsInProgress = 0;
 
         var service = {
+            readById: readById,
             getPayments: getPayments,
             getPaymentsByCustomer: getPaymentsByCustomer,
             getPaymentsValidTodayByCustomer: getPaymentsValidTodayByCustomer,
+            getPayerByPayment: getPayerByPayment,
             createPayment: createPayment,
             deletePayment: deletePayment,
             isRequestInProgress: isRequestInProgress
@@ -26,6 +28,20 @@
         // Internal methods
         // *********************************
 
+        function readById(id) {
+            requestsInProgress++;
+            return $http
+                .get(paymentsUrl + '/' + id)
+                .then(function (response) {
+                    requestsInProgress--;
+                    return response.data;
+                }, function () {
+                    //TODO report error;
+                    requestsInProgress--;
+                });
+        }
+
+        //TODO optional projection
         function getPayments() {
             requestsInProgress++;
             return $http
@@ -69,6 +85,19 @@
                     requestsInProgress--;
                     return response.data._embedded.payments;
                 }, function () {
+                    //TODO report error
+                    requestsInProgress--;
+                });
+        }
+
+        function getPayerByPayment(payment) {
+            requestsInProgress++;
+            return $http
+                .get(payment._links.payer.href)
+                .then(function(response) {
+                    requestsInProgress--;
+                    return response.data;
+                }, function() {
                     //TODO report error
                     requestsInProgress--;
                 });
