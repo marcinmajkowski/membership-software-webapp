@@ -18,7 +18,7 @@
                 .when('/customers', {
                     templateUrl: 'src/customers/customers.html'
                 })
-                .when('/customer/:id', {
+                .when('/customers/:id', {
                     templateUrl: 'src/customers/customer.html',
                     controller: 'CustomerController',
                     controllerAs: 'vm'
