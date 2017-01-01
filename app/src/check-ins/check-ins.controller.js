@@ -16,7 +16,7 @@
 
         function activate() {
             checkInsService
-                .getCheckIns()
+                .getCheckInsProjection('customerAndTimestampAndIsPaid')
                 .then(function (checkIns) {
                     vm.checkIns = [].concat(checkIns);
                 });

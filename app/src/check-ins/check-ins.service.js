@@ -13,6 +13,7 @@
 
         var service = {
             getCheckIns: getCheckIns,
+            getCheckInsProjection: getCheckInsProjection,
             createCheckInForCustomer: createCheckInForCustomer,
             deleteCheckIn: deleteCheckIn,
             readCheckInsByCustomer: readCheckInsByCustomer,
@@ -30,6 +31,20 @@
             requestsInProgress++;
             return $http
                 .get(checkInsUrl + '/?sort=timestamp,desc')
+                .then(function (response) {
+                    requestsInProgress--;
+                    return response.data._embedded.checkIns;
+                }, function () {
+                    //TODO report error
+                    requestsInProgress--;
+                });
+        }
+
+        function getCheckInsProjection(projection) {
+            requestsInProgress++;
+            return $http
+                //FIXME paging is necessary
+                .get(checkInsUrl + '?projection=' + projection)
                 .then(function (response) {
                     requestsInProgress--;
                     return response.data._embedded.checkIns;
