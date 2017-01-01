@@ -16,6 +16,7 @@
             createCheckInForCustomer: createCheckInForCustomer,
             deleteCheckIn: deleteCheckIn,
             readCheckInsByCustomer: readCheckInsByCustomer,
+            readCheckInsByPayment: readCheckInsByPayment,
             isRequestInProgress: isRequestInProgress
         };
 
@@ -89,6 +90,19 @@
                     //TODO report error
                     requestsInProgress--;
                 });
+        }
+
+        function readCheckInsByPayment(payment) {
+            requestsInProgress++;
+            return $http
+                .get(payment._links.checkIns.href)
+                .then(function (response) {
+                    requestsInProgress--;
+                    return response.data._embedded.checkIns;
+                }, function () {
+                    //TODO report error
+                    requestsInProgress--;
+                });           
         }
 
         function isRequestInProgress() {

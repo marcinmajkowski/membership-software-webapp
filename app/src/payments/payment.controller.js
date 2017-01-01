@@ -5,12 +5,18 @@
         .module('payments')
         .controller('PaymentController', PaymentController);
 
-    PaymentController.$inject = ['paymentsService', '$location', '$mdDialog', '$routeParams'];
+    PaymentController.$inject = ['paymentsService', 'checkInsService', '$location', '$mdDialog', '$routeParams'];
 
-    function PaymentController(paymentsService, $location, $mdDialog, $routeParams) {
+    function PaymentController(paymentsService, checkInsService, $location, $mdDialog, $routeParams) {
         var vm = this;
 
         vm.payment = {};
+
+        vm.checkIns = [];
+        vm.isCheckInsRequestInProgress = checkInsService.isRequestInProgress;
+        vm.newCheckIn = newCheckIn;
+        vm.editCheckIn = editCheckIn;
+        vm.deleteCheckIn = deleteCheckIn;
 
         activate();
 
@@ -28,6 +34,12 @@
                         .getPayerByPayment(payment)
                         .then(function (payer) {
                             payment.payer = payer;
+                            loadCheckIns();
+                        }, function () {
+                            //TODO report error
+                            //TODO refactor
+                            $location.path('/');
+                            return;
                         });
                 }, function () {
                     //TODO report error
@@ -35,6 +47,29 @@
                     return;
                 });
         }
+
+        function loadCheckIns() {
+            checkInsService
+                .readCheckInsByPayment(vm.payment)
+                .then(function (checkIns) {
+                    vm.checkIns = [].concat(checkIns);
+                }, function () {
+                    //TODO report error
+                });
+        }
+
+        function newCheckIn(event) {
+            console.log('TODO PaymentController.newCheckIn()');
+        }
+
+        function editCheckIn(checkIn, event) {
+            console.log('TODO PaymentController.editCheckIn()');
+        }
+
+        function deleteCheckIn(checkIn, event) {
+            console.log('TODO PaymentController.deleteCheckIn()');
+        }
+
     }
 
 })();
