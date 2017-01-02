@@ -13,7 +13,7 @@
 
         var service = {
             getCheckIns: getCheckIns,
-            getCheckInsProjection: getCheckInsProjection,
+            getCheckInsProjectionPage: getCheckInsProjectionPage,
             createCheckInForCustomer: createCheckInForCustomer,
             deleteCheckIn: deleteCheckIn,
             readCheckInsByCustomer: readCheckInsByCustomer,
@@ -40,14 +40,17 @@
                 });
         }
 
-        function getCheckInsProjection(projection) {
+        //TODO better naming - now returned page contains page (specification)
+        function getCheckInsProjectionPage(projection, page) {
             requestsInProgress++;
             return $http
-                //FIXME paging is necessary
-                .get(checkInsUrl + '?projection=' + projection)
+                .get(checkInsUrl + '?projection=' + projection + '&page=' + page.number + '&size=' + page.size + '&sort=timestamp,desc')
                 .then(function (response) {
                     requestsInProgress--;
-                    return response.data._embedded.checkIns;
+                    return {
+                        checkIns: response.data._embedded.checkIns,
+                        page: response.data.page
+                    };
                 }, function () {
                     //TODO report error
                     requestsInProgress--;
@@ -117,7 +120,7 @@
                 }, function () {
                     //TODO report error
                     requestsInProgress--;
-                });           
+                });
         }
 
         function isRequestInProgress() {

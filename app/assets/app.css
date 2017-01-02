@@ -4,3 +4,14 @@
   width:100%;
   text-align:left !important;
 }
+
+/* page-control component */
+
+md-input-container.ms-page-control {
+  margin: 0px 12px 0px 0px;
+  padding-bottom: 3px;
+}
+
+md-input-container.ms-page-control md-select md-select-value {
+  min-width: 60px;
+}

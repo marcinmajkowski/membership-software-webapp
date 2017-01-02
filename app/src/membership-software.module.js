@@ -8,6 +8,7 @@
             'membershipSoftwareRoute',
             'membershipSoftwareConstants',
             'membershipSoftwareLayout',
+            'paging',
             'home',
             'checkIns',
             'payments',
