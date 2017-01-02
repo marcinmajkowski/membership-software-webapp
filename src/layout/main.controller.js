@@ -100,7 +100,7 @@
                 return;
             }
 
-            vm.go('/customer/' + customer.id);
+            vm.go('/customers/' + customer.id);
             vm.autocomplete = {};
         }
 
@@ -155,7 +155,7 @@
 
         function selectCustomer(customer) {
             closeCustomerList();
-            $location.path('/customer/' + customer.id);
+            $location.path('/customers/' + customer.id);
         }
 
         function findCustomer() {

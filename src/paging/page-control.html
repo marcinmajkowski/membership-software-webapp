@@ -1,0 +1,19 @@
+<div layout="row" layout-align="end center">
+    <!-- TODO better alignment of all elements (min-width for from-to) -->
+    <span>Pokaż na stronę: </span>
+    <md-input-container md-no-float class="ms-page-control">
+        <md-select ng-model="$ctrl.pageSize" placeholder="Ilość" class="md-no-underline" ng-change="$ctrl.sizeChanged()">
+            <md-option value="10">10</md-option>
+            <md-option value="20">20</md-option>
+            <md-option value="50">50</md-option>
+            <md-option value="100">100</md-option>
+        </md-select>
+    </md-input-container>
+    <span style="margin: 0px 12px;">{{$ctrl.from() + '-' + $ctrl.to() + ' z ' + $ctrl.page.totalElements}}</span>
+    <md-button class="md-icon-button" aria-label="Poprzednia strona" ng-click="$ctrl.previousPage()">
+        <md-icon md-svg-icon="chevron_left_black"></md-icon>
+    </md-button>
+    <md-button class="md-icon-button" aria-label="Następna strona" ng-click="$ctrl.nextPage()">
+        <md-icon md-svg-icon="chevron_right_black"></md-icon>
+    </md-button>
+</div>

@@ -8,6 +8,7 @@
             controller: 'CheckInListController',
             bindings: {
                 checkIns: '<msCheckIns',
+                showCustomer: '=?msShowCustomer',
                 onDelete: '&?msOnDelete',
                 onEdit: '&?msOnEdit'
             }

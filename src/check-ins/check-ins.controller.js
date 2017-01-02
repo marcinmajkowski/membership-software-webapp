@@ -11,15 +11,32 @@
         var vm = this;
 
         vm.checkIns = [];
+        vm.page = {}
+        vm.onPageChange = onPageChange;
 
         activate();
 
         function activate() {
+            vm.page = {
+                size: 10,
+                number: 0,
+            };
+
+            loadCheckIns();
+        }
+
+        function loadCheckIns() {
             checkInsService
-                .getCheckIns()
-                .then(function (checkIns) {
-                    vm.checkIns = [].concat(checkIns);
+                .getCheckInsProjectionPage('customerAndTimestampAndIsPaid', vm.page)
+                .then(function (checkInsPage) {
+                    vm.checkIns = [].concat(checkInsPage.checkIns);
+                    vm.page = checkInsPage.page;
                 });
+        }
+
+        function onPageChange(changedPage) {
+            vm.page = changedPage;
+            loadCheckIns();
         }
     }
 

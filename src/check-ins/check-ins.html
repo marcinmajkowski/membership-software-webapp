@@ -4,5 +4,8 @@
             <h2>Wejścia</h2>
         </div>
     </md-toolbar>
-    <ms-check-in-list ms-check-ins="vm.checkIns"></ms-check-in-list>
+    <ms-check-in-list ms-check-ins="vm.checkIns" ms-show-customer="true"></ms-check-in-list>
+    <md-card-actions>
+        <ms-page-control ms-page="vm.page" ms-on-change="vm.onPageChange(changedPage)"></ms-page-control>
+    </md-card-actions>
 </md-card>

@@ -251,20 +251,26 @@
         }
 
         function newCheckIn(ev) {
-            //TODO open dialog to select group and payment if multiple available
-            var checkInToCreate = {
-                timestamp: new Date(),
-                payment: getCheckInPayment()
-            };
+            //TODO refactor
+            paymentsService
+                .getPaymentsValidTodayByCustomer(vm.customer)
+                .then(getCheckInPayment)
+                .then(function (payment) {
+                    //TODO open dialog to select group and payment if multiple available
+                    var checkInToCreate = {
+                        timestamp: new Date(),
+                        payment: payment
+                    };
 
-            checkInsService
-                .createCheckInForCustomer(checkInToCreate, vm.customer)
-                .then(function (checkIn) {
-                    loadCheckIns();
-                    //TODO
-                    if (checkIn.paid) {
-                        loadPayments();
-                    }
+                    checkInsService
+                        .createCheckInForCustomer(checkInToCreate, vm.customer)
+                        .then(function (checkIn) {
+                            loadCheckIns();
+                            //TODO
+                            if (checkIn.paid) {
+                                loadPayments();
+                            }
+                        });
                 });
         }
 
@@ -306,18 +312,14 @@
          * access, the earliest ending active payment with check-ins left is
          * returned. If there are no active payments, null is returned. 
          */
-        //FIXME use service to get proper payment since vm.payments no longer
-        //FIXME contain all available payments!
-        function getCheckInPayment() {
-            var activePayments = vm.payments.filter(isPaymentActive);
-
-            var openAccessPayments = activePayments.filter(isPaymentOpenAccess);
+        function getCheckInPayment(payments) {
+            var openAccessPayments = payments.filter(isPaymentOpenAccess);
             if (openAccessPayments.length > 0) {
                 //TODO no sort necessary - need the smallest element only
                 return openAccessPayments.sort(comparePaymentEndDates)[0];
             }
 
-            var validPayments = activePayments.filter(hasPaymentCheckInsLeft);
+            var validPayments = payments.filter(hasPaymentCheckInsLeft);
             if (validPayments.length > 0) {
                 //TODO no sort necessary - need the smallest element only
                 return validPayments.sort(comparePaymentEndDates)[0];
@@ -338,19 +340,6 @@
 
         function isPaymentOpenAccess(payment) {
             return payment.membershipNumberOfTrainings < 0;
-        }
-
-        function isPaymentActive(payment) {
-            var startDate = new Date(payment.membershipStartDate);
-            startDate.setHours(0, 0, 0, 0);
-
-            var endDate = new Date(payment.membershipEndDate);
-            endDate.setHours(0, 0, 0, 0);
-
-            var today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            return today <= endDate && today >= startDate;
         }
     }
 

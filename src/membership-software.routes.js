@@ -10,6 +10,11 @@
                     controller: 'PaymentsController',
                     controllerAs: 'vm'
                 })
+                .when('/payments/:id', {
+                    templateUrl: 'src/payments/payment.html',
+                    controller: 'PaymentController',
+                    controllerAs: 'vm'
+                })
                 .when('/check-ins', {
                     templateUrl: 'src/check-ins/check-ins.html',
                     controller: 'CheckInsController',
@@ -18,7 +23,7 @@
                 .when('/customers', {
                     templateUrl: 'src/customers/customers.html'
                 })
-                .when('/customer/:id', {
+                .when('/customers/:id', {
                     templateUrl: 'src/customers/customer.html',
                     controller: 'CustomerController',
                     controllerAs: 'vm'

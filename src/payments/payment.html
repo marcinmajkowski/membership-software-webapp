@@ -1,0 +1,31 @@
+<md-card>
+    <md-toolbar>
+        <!-- TODO real breadcrumb aware of previous location -->
+        <div class="md-toolbar-tools">
+            <h2>
+                <a href="#/customers/{{vm.payment.payer.id}}">{{ vm.payment.payer.firstName + " " + vm.payment.payer.lastName }}</a>
+                <md-icon md-svg-icon="navigate_next_white"></md-icon>
+                {{ '"' + vm.payment.membershipName + '" z ' + (vm.payment.timestamp | date:'dd.MM.yyyy') }}
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-card-content>
+        <p>Szczegóły płatności.</p>
+    </md-card-content>
+</md-card>
+
+<md-card>
+    <md-progress-linear md-mode="indeterminate" ng-disabled="!vm.isCheckInsRequestInProgress()"></md-progress-linear>
+    <!-- original padding was 24px but md-progress-linear height is 5px -->
+    <md-card-title style="padding-top: 19px;">
+        <md-card-title-text>
+            <span class="md-headline">Wejścia</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-actions layout="row">
+        <!-- TODO show only if available -->
+        <a href class="md-button md-primary" ng-click="vm.newCheckIn($event)">Nowe wejście</a>
+    </md-card-actions>
+    <ms-check-in-list ms-check-ins="vm.checkIns" ms-on-edit="vm.editCheckIn(checkIn, event)" ms-on-delete="vm.deleteCheckIn(checkIn, event)"
+        ng-hide="vm.checkIns.length == 0"></ms-check-in-list>
+</md-card>

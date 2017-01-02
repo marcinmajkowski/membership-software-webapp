@@ -13,9 +13,11 @@
 
         var service = {
             getCheckIns: getCheckIns,
+            getCheckInsProjectionPage: getCheckInsProjectionPage,
             createCheckInForCustomer: createCheckInForCustomer,
             deleteCheckIn: deleteCheckIn,
             readCheckInsByCustomer: readCheckInsByCustomer,
+            readCheckInsByPayment: readCheckInsByPayment,
             isRequestInProgress: isRequestInProgress
         };
 
@@ -32,6 +34,23 @@
                 .then(function (response) {
                     requestsInProgress--;
                     return response.data._embedded.checkIns;
+                }, function () {
+                    //TODO report error
+                    requestsInProgress--;
+                });
+        }
+
+        //TODO better naming - now returned page contains page (specification)
+        function getCheckInsProjectionPage(projection, page) {
+            requestsInProgress++;
+            return $http
+                .get(checkInsUrl + '?projection=' + projection + '&page=' + page.number + '&size=' + page.size + '&sort=timestamp,desc')
+                .then(function (response) {
+                    requestsInProgress--;
+                    return {
+                        checkIns: response.data._embedded.checkIns,
+                        page: response.data.page
+                    };
                 }, function () {
                     //TODO report error
                     requestsInProgress--;
@@ -82,6 +101,19 @@
             requestsInProgress++;
             return $http
                 .get(checkInsUrl + '/search/findByCustomer/', { params: params })
+                .then(function (response) {
+                    requestsInProgress--;
+                    return response.data._embedded.checkIns;
+                }, function () {
+                    //TODO report error
+                    requestsInProgress--;
+                });
+        }
+
+        function readCheckInsByPayment(payment) {
+            requestsInProgress++;
+            return $http
+                .get(payment._links.checkIns.href)
                 .then(function (response) {
                     requestsInProgress--;
                     return response.data._embedded.checkIns;

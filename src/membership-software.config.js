@@ -21,6 +21,9 @@
                 .icon("hangouts", "./assets/svg/hangouts.svg", 512)
                 .icon("twitter", "./assets/svg/twitter.svg", 512)
                 .icon("phone", "./assets/svg/phone.svg", 512)
+                .icon("navigate_next_white", "./assets/svg/ic_navigate_next_white_24px.svg", 24)
+                .icon("chevron_left_black", "./assets/svg/ic_chevron_left_black_24px.svg", 24)
+                .icon("chevron_right_black", "./assets/svg/ic_chevron_right_black_24px.svg", 24)
                 .icon("person_add", "./assets/svg/ic_person_add_24px.svg", 24)
                 .icon("person_add_black", "./assets/svg/ic_person_add_black_24px.svg", 24);
 
