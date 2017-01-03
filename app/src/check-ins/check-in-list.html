@@ -2,13 +2,10 @@
     <md-list-item ng-repeat="checkIn in $ctrl.checkIns | orderBy:'-timestamp'" ng-click="null">
         <p>
             <span ng-if="$ctrl.showCustomer">{{checkIn.customer.firstName + ' ' + checkIn.customer.lastName + ' -'}}</span>
-            {{checkIn.timestamp | date:'dd.MM.yyyy o HH:mm'}} <small class="md-caption" md-colors="{color:'warn'}" ng-if="!checkIn.paid">(nie opłacone)</small> 
+            {{checkIn.timestamp | date:'dd.MM.yyyy o HH:mm'}}
+            <small class="md-caption" md-colors="{color:'warn'}" ng-if="!checkIn.paid">(nie opłacone)</small>
         </p>
-        <md-button class="md-icon-button md-secondary" aria-label="Usuń" ng-click="$ctrl.remove(checkIn, $event)">
-            <md-icon md-svg-icon="delete_forever"></md-icon>
-        </md-button>
-        <md-button class="md-icon-button md-secondary" aria-label="Edytuj" ng-click="$ctrl.edit(checkIn, $event)">
-            <md-icon md-svg-icon="mode_edit"></md-icon>
-        </md-button>
+        <md-icon class="md-secondary" md-svg-icon="delete_forever" aria-label="Usuń" ng-click="$ctrl.remove(checkIn, $event)"></md-icon>
+        <md-icon class="md-secondary" md-svg-icon="mode_edit" aria-label="Edytuj" ng-click="$ctrl.edit(checkIn, $event)"></md-icon>
     </md-list-item>
 </md-list>

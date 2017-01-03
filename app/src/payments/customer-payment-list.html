@@ -21,11 +21,8 @@
                 <span ng-if="payment.membershipNumberOfTrainings > 0">(pozostało {{payment.membershipNumberOfTrainings - payment.checkInsSize}} wejść)</span>
             </p>
         </div>
-        <md-button class="md-icon-button md-secondary" aria-label="Usuń" ng-click="$ctrl.deletePayment(payment, $event)">
-            <md-icon md-svg-icon="delete_forever"></md-icon>
-        </md-button>
-        <md-button class="md-icon-button md-secondary" aria-label="Edytuj" ng-click="$ctrl.editPayment(payment, $event)">
-            <md-icon md-svg-icon="mode_edit"></md-icon>
-        </md-button>
+        <!-- FIXME there is a bug, so buttons are out of window if it is too narrow. I probably should decide whether buttons or md-3-line -->
+        <md-icon class="md-secondary" md-svg-icon="delete_forever" aria-label="Usuń" ng-click="$ctrl.deletePayment(payment, $event)"></md-icon>
+        <md-icon class="md-secondary" md-svg-icon="mode_edit" aria-label="Edytuj" ng-click="$ctrl.editPayment(payment, $event)"></md-icon>
     </md-list-item>
 </md-list>

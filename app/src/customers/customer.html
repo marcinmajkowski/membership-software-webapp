@@ -56,14 +56,12 @@
                     <span class="md-headline">Karty</span>
                 </md-card-title-text>
             </md-card-title>
-            <md-card-actions layout="row">
+            <md-card-actions layout="row" layout-align="end">
                 <a href class="md-button md-primary" ng-click="vm.newCard($event, vm.customer)">
                     Nowa karta
                 </a>
             </md-card-actions>
-            <md-card-content ng-hide="vm.cards.length == 0">
-                <ms-card-list ms-cards="vm.cards" ms-on-edit="vm.editCard(card, event)" ms-on-delete="vm.deleteCard(card, event)"></ms-card-list>
-            </md-card-content>
+            <ms-card-list ng-hide="vm.cards.length == 0" ms-cards="vm.cards" ms-on-edit="vm.editCard(card, event)" ms-on-delete="vm.deleteCard(card, event)"></ms-card-list>
             <!-- TODO remove ugly gap -->
         </md-card>
 
@@ -76,7 +74,7 @@
                     <span class="md-headline">Płatności</span>
                 </md-card-title-text>
             </md-card-title>
-            <md-card-actions layout="row">
+            <md-card-actions layout="row" layout-align="end">
                 <a href class="md-button md-primary" ng-click="vm.newPayment($event)">
                     Nowa płatność
                 </a>
@@ -100,7 +98,7 @@
                     <span class="md-headline">Wejścia</span>
                 </md-card-title-text>
             </md-card-title>
-            <md-card-actions layout="row">
+            <md-card-actions layout="row" layout-align="end">
                 <a href class="md-button md-primary" ng-click="vm.newCheckIn($event)">
                     Nowe wejście
                 </a>
