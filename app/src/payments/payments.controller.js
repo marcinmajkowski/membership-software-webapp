@@ -12,6 +12,8 @@
         var vm = this;
 
         vm.payments = [];
+        vm.page = {}
+        vm.onPageChange = onPageChange;
         vm.newPayment = newPayment;
 
         activate();
@@ -21,13 +23,30 @@
         // *********************************
 
         function activate() {
-            paymentsService.getPayments().then(function (payments) {
-                vm.payments = [].concat(payments);
-            });
+            vm.page = {
+                size: 10,
+                number: 0,
+            };
+
+            loadPayments();
+        }
+
+        function loadPayments() {
+            paymentsService
+                .getPaymentsProjectionPage('payerAndMembershipPriceAndTimestamp', vm.page)
+                .then(function (paymentsPage) {
+                    vm.payments = [].concat(paymentsPage.payments);
+                    vm.page = paymentsPage.page;
+                });
         }
 
         function newPayment() {
             console.log('TODO PaymentsController.newPayment()');
+        }
+
+        function onPageChange(changedPage) {
+            vm.page = changedPage;
+            loadPayments();
         }
     }
 

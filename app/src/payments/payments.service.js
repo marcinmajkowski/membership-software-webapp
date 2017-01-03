@@ -13,7 +13,7 @@
 
         var service = {
             readById: readById,
-            getPayments: getPayments,
+            getPaymentsProjectionPage: getPaymentsProjectionPage,
             getPaymentsByCustomer: getPaymentsByCustomer,
             getPaymentsValidTodayByCustomer: getPaymentsValidTodayByCustomer,
             getPayerByPayment: getPayerByPayment,
@@ -41,14 +41,18 @@
                 });
         }
 
-        //TODO optional projection
-        function getPayments() {
+        //TODO better naming - now returned page contains page (specification)
+        function getPaymentsProjectionPage(projection, page) {
             requestsInProgress++;
             return $http
-                .get(paymentsUrl + '?projection=payerAndMembershipPriceAndTimestamp')
+                //TODO sort (what if there is no timestamp in projection?)
+                .get(paymentsUrl + '?projection=' + projection + '&page=' + page.number + '&size=' + page.size + '&sort=timestamp,desc')
                 .then(function (response) {
                     requestsInProgress--;
-                    return response.data._embedded.payments;
+                    return {
+                        payments: response.data._embedded.payments,
+                        page: response.data.page
+                    };
                 }, function () {
                     //TODO report error;
                     requestsInProgress--;

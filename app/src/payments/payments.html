@@ -4,10 +4,13 @@
             <h2>Płatności</h2>
         </div>
     </md-toolbar>
-    <ms-payment-list ms-payments="vm.payments"></ms-payment-list>
-    <md-card-actions layout="row" layout-align="end center">
-        <md-button ng-click="vm.newPayment()">
+    <md-card-actions layout="row" layout-align="end">
+        <md-button class="md-primary" ng-click="vm.newPayment()">
             Nowa płatność
         </md-button>
+    </md-card-actions>
+    <ms-payment-list ms-payments="vm.payments"></ms-payment-list>
+    <md-card-actions>
+        <ms-page-control ms-page="vm.page" ms-on-change="vm.onPageChange(changedPage)"></ms-page-control>
     </md-card-actions>
 </md-card>
